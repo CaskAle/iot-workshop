@@ -18,7 +18,7 @@ to try and complete the exercise on your own, follow the Jedi Master
 path. Otherwise, if you prefer a more guided approach, choose the Jedi
 Padowan path. Choose wisely and have fun.
 
-### Total time to complete: One Hour 
+### Total time to complete: 1.5 - 2 Hours 
 
 I.  Create the Bluemix Application Space (17 minutes)
 
@@ -26,13 +26,20 @@ II. Define IoT devices to Internet of Things Service (10 minutes)
 
 III. Create dashDB table for environment data (8 minutes)
 
-IV. Build Bluemix Node-Red flows
+IV. Build Bluemix Node-Red flows (40 minutes)
 
 V.  Connect to Raspberry Pi and Start Node-Red (5 minutes)
 
-VI. Build Raspberry Pi Node-Red flows
+VI. Build Raspberry Pi Node-Red flows (40 minutes)
 
-VII. Deploy and validate success
+VII. Deploy and validate success (8 minutes)
+
+***Note**: In the interest of time, it will be necessary to build the
+Bluemix and Raspberry Pi Node-Red flows concurrently. One system will be
+used to build the Bluemix portion, while another is used to build the
+Raspberry Pi portion. During this time, all three team members should
+work to oversee the overall project and provide each other guidance and
+debugging support.*
 
 Prerequisites:
 ==============
@@ -40,7 +47,7 @@ Prerequisites:
 This workshop assumes that you have completed the STSA event
 prerequisite activities. Specifically, you should have:
 
--   An SSH terminal program for connecting to the Raspberry Pi. If you
+1.  An SSH terminal program for connecting to the Raspberry Pi. If you
     are using a MacOS or Linux based system, you are ready to go. If
     using Windows, you should have installed the PuTTY application
     available on the IBM Standard Software installer.
@@ -110,7 +117,7 @@ your system prepared as you will not have time to complete the exercise.
 ### PART IV: Create Bluemix Node-Red Flows
 
 -   Create the following:\
-    ![](./media/image2.png){width="7.0in" height="3.658333333333333in"}
+    ![](./media/image2.png){width="7.0in" height="3.6416666666666666in"}
 
 -   Receive the three different event types (environment, motion, &
     joystick).
@@ -138,11 +145,15 @@ your system prepared as you will not have time to complete the exercise.
     string payload with a topic that identifies the specific command
     being sent as follows:
 
-  **Payload**                      **Topic**   **Name**
-  -------------------------------- ----------- --------------
-  String: off                      alarm       Turn off LED
-  String: color (red, blue, etc)   alarm       Send Alarm
-  String: any text string          message     Send Message
+  **Type**   **Payload**                       **Topic**   **Name**
+  ---------- --------------------------------- ----------- --------------
+  string     off                               alarm       Turn off LED
+  string     green                             alarm       Green
+  string     red                               alarm       Red
+  string     enter any message you like here   message     Send Message
+
+> ***Note:** You will be using the Red and Green buttons to provide
+> answers to questions over the course of the event.*
 
 -   Set the outbound msg.eventOrCommandType to either alarm or message
     based upon the incoming topic type.
@@ -162,21 +173,29 @@ your system prepared as you will not have time to complete the exercise.
 
 ### PART V: Start Node-Red on Raspberry Pi
 
--   Connect to your Raspberry Pi using SSH. Your Pi can be reached at IP
+1.  Apply power to your Raspberry Pi by attaching a standard microUSB
+    cable between a laptop and the microUSB connector on the Raspberry
+    Pi (booting takes less than a minute).
+
+2.  Connect to your Raspberry Pi using SSH. Your Pi can be reached at IP
     address 192.168.32.xx. Replace the xx with your specific team
     number. For example, team 30 would use:\
-    **ssh pi@192.168.32.30**
+    **ssh pi@192.168.32.30** (pi is the username)
 
--   The Raspberry Pi credential are:
+3.  The Raspberry Pi credential are:\
+    User ID: pi\
+    Password: raspberry
 
-> User ID: pi\
-> Password: raspberry
+4.  In order to ensure that node-red will restart automatically in the
+    event of reboots and crashes, you should enable the nodered service
+    with the command:\
+    sudo systemctl enable nodered.service
 
--   Start Node-Red on the Pi with the command: node-red-start.
+5.  Finally, start Node-Red on the Pi with the command: node-red-start
 
 > ***FYI**: When the Node-Red app starts, the last action it performs is
 > to start a logging function. You can exit this logging, if needed, by
-> pressing Ctrl-C. This will not stop Node-Red itself. If/When you want
+> pressing Ctrl-c. This will not stop Node-Red itself. If/When you want
 > to stop Node-Red, you need to issue the command: node-red-stop.*
 
 ### Part VI: Create Raspberry Pi Node-Red Flows
@@ -245,6 +264,13 @@ your system prepared as you will not have time to complete the exercise.
 
 *Jedi Padowan Path*
 ===================
+
+In order to ensure that everyone get valuable experience with creating
+Bluemix applications and services, please complete parts I – III
+together as a team. After part III, development will proceed
+concurrently. One system will be used to complete part IV, while another
+is used to complete parts V & VI. The team will again work together to
+complete part VII – Validation and test.
 
 ### PART I: Create the Bluemix Application Space
 
@@ -544,6 +570,9 @@ sensor that sent the data along with a time stamp.
     ![](./media/image23.png){width="1.30625in"
     height="1.458383639545057in"}
 
+At this point, you should split development tasks. One should continue with part IV, while another completes parts V & VI.
+--------------------------------------------------------------------------------------------------------------------------
+
 ### Part IV: Create Bluemix Node-Red Flows
 
 In this portion of the workshop you will create a Node-Red application
@@ -601,7 +630,7 @@ Ready? Let’s begin.
 
 3.  The ibmiot input node will receive the events that are sent from the
     Raspberry Pi application. You will need to configure the node by
-    opening settings and configuring as follows:
+    double-clicking on it to open its settings panel.
 
 -   ![](./media/image33.png){width="3.61875in"
     height="2.959722222222222in"}Because the IoT service is connected to
@@ -638,12 +667,13 @@ Ready? Let’s begin.
 
 5.  Once the Raspberry Pi side of this application is complete, you will
     be able to verify that you are receiving events from the Raspberry
-    Pi by clicking ![](./media/image36.png){width="0.8387325021872266in"
-    height="0.2012959317585302in"}.
+    Pi by clicking ![](./media/image36.png){width="1.0893383639545058in"
+    height="0.2614413823272091in"}.
 
 6.  On the right side of the page you should see a tab labeled “debug”.
     Click on that tab and you should see data flowing into your debug
-    node from the ibmiot nodes.
+    node from the ibmiot nodes. If the Raspberry Pi side of this
+    application is up and running
 
 7.  On the right side of the debug node you will see a green toggle
     button ![](./media/image37.png){width="0.5203937007874015in"
@@ -651,12 +681,13 @@ Ready? Let’s begin.
     output to that particular debug node. Turn off the output by
     clicking the toggle and the data will stop coming into the debug
     panel. Now you can get a closer look at the actual event messages
-    that are being received as they won’t continually scroll by. Take a
-    minute to examine the debug output. You will see that each message
-    has a payload. Notice that each message will have an event type that
-    matches one of the three events that the Raspberry Pi forwards
-    (environment, motion, & joystick). ***Note**: You can flush the
-    contents of the debug tab by clicking the trash can in the upper
+    that are being received as they won’t continually scroll by. If the
+    Raspberry Pi side of this application is up and running, you should
+    take a minute to examine the debug output. You will see that each
+    message has a payload. Notice that each message will have an event
+    type that matches one of the three events that the Raspberry Pi
+    forwards (environment, motion, & joystick). ***Note**: You can flush
+    the contents of the debug tab by clicking the trash can in the upper
     right corner.*
 
 8.  Now you will store the incoming environment event data into your
@@ -697,8 +728,11 @@ Ready? Let’s begin.
 1.  Drag another debug node into the workspace and connect it to the
     right side of the function node.
 
-2.  Deploy the app and verify that the output from your function node
+2.  Deploy the app and, if the Raspberry Pi side of this application is
+    up and running, verify that the output from your function node
     appears correct by examining the payload output in the debug tab.
+    Otherwise, keep moving forward and you can verify the data flow
+    later.
 
 3.  Once the data is being formatted properly, it’s time to store it
     into your database. Find a **dashDB** output node (storage) and
@@ -720,7 +754,7 @@ Ready? Let’s begin.
 
 1.  The second flow will inject test data that will be sent to the Sense
     Hat device to control the LED. In order to build the second flow,
-    you will need six nodes. Three **inject** nodes will connect to a
+    you will need seven nodes. Four **inject** nodes will connect to a
     **function** node, which in turn will connect to both a **ibmiot**
     output node, and a **debug** node. In some space below your first
     flow, drag these nodes into your workspace and connect them as
@@ -728,20 +762,24 @@ Ready? Let’s begin.
 
 2.  Like before, set the debug node to show the **complete msg object**.
 
-3.  The three inject nodes will be used to trigger test messages in
-    order to ensure that you can control the LED from your Bluemix
-    application. Pressing the button on the left side of the inject node
-    allows a message on a topic to be injected into the flow. You will
-    use the topic field to identify the type of command (alarm or
-    message) you wish to send. The payload should be a string that will
-    be sent on to the function node. The string will differ for each
-    node. The inject nodes should look as follows:
+3.  The four inject nodes will be used to trigger messages that will
+    control the LED from your Bluemix application. Pressing the button
+    on the left side of the inject node allows a message on a topic to
+    be injected into the flow. You will use the topic field to identify
+    the type of command (alarm or message) you wish to send. The payload
+    should be a string that will be sent on to the function node. The
+    string will differ for each node. The inject nodes should look as
+    follows:
 
-  **Payload**                      **Topic**   **Name**
-  -------------------------------- ----------- --------------
-  String: off                      alarm       Turn off LED
-  String: color (red, blue, etc)   alarm       Send Alarm
-  String: any text string          message     Send Message
+  **Type**   **Payload**                       **Topic**   **Name**
+  ---------- --------------------------------- ----------- --------------
+  string     off                               alarm       Turn off LED
+  string     green                             alarm       Green
+  string     red                               alarm       Red
+  string     Enter any message you like here   message     Send Message
+
+> ***Note:** You will be using the Red and Green buttons to provide
+> answers to questions over the course of the event.*
 
 1.  Now let’s move on to the function node. As you now already have
     experience with the function node, enter the following code snippet
@@ -772,11 +810,9 @@ Ready? Let’s begin.
 
 1.  All that is left is to configure the ibmiot output node:
 
-![](./media/image38.png){width="3.2930555555555556in"
-height="3.03125in"}
-
--   The configuration of this node is very similar to the ibmiot input
-    node.
+-   ![](./media/image38.png){width="3.2069444444444444in"
+    height="2.986111111111111in"}The configuration of this node is very
+    similar to the ibmiot input node.
 
     -   The output type in this case is a device command as opposed to a
         device event. We are sending a command to the device rather than
@@ -794,17 +830,26 @@ height="3.03125in"}
 
 2.  In the end, your Bluemix application should look something like
     this:\
-    ![](./media/image2.png){width="7.0in" height="3.658333333333333in"}
+    ![](./media/image2.png){width="7.0in" height="3.6416666666666666in"}
 
 ### PART V: Start Node-Red on Raspberry Pi
+
+1.  In order to get started with the Raspberry Pi, you first need to
+    apply power to the device. To do this, attach a standard microUSB
+    cable between a laptop and the microUSB connector on the Raspberry
+    Pi (booting takes less than a minute).
+
+2.  Now it is time to connect to the Raspberry Pi with a secure shell
+    (ssh). The instructions are slightly different depending on your
+    laptop OS
 
 *Mac OS*:
 
 1.  Start the Terminal application from the Mac OS Launchpad.
 
-2.  Issue the command: **ssh pi@ 192.168.32.xx**. Replace the xx with
-    your team specific team number. For example, team 30 would use:
-    **ssh pi@192.168.32.30\
+2.  Issue the command: **ssh pi@192.168.32.xx** (replace the xx with
+    your team specific team number). For example, team 30 would use:
+    **ssh pi@192.168.32.30** (pi is the username)**\
     *Note: ****When you connect for the first time, you may see a
     message indicating that the authenticity of the host could not be
     established. Simply answer with “yes”.*
@@ -813,9 +858,9 @@ height="3.03125in"}
 
 1.  Start the PuTTY application from the Windows start menu.
 
-2.  Enter **pi@ 192.168.32.xx**. (Replace the xx with your team specific
-    team number. For example, team 30 would use: **ssh
-    pi@192.168.32.30**)
+2.  Enter **pi@192.168.32.xx** (replace the xx with your team specific
+    team number). For example, team 30 would use: **ssh
+    pi@192.168.32.30** (pi is the username)
 
 3.  Click “Open”.\
     ***Note:** When you connect for the first time, you may see a
@@ -825,23 +870,25 @@ height="3.03125in"}
 *Everyone*:
 
 1.  At this point, you will be prompted for the user password. The
-    Raspberry Pi credentials are:
+    Raspberry Pi credentials are:\
+    User ID: **pi**\
+    Password: **raspberry**\
+    ***Note:** Once logged in, you will see a message reminding you to
+    change the password of your Pi. Use the **passwd** command to change
+    it in order to ensure the security of your work. Be sure to make a
+    note of your new password. *
 
-> User ID: **pi**\
-> Password: **raspberry**
->
-> ***Note:** Once logged in, you will see a message reminding you to
-> change the password of your Pi. Use the **passwd** command to change
-> it in order to ensure the security of your work. Be sure to make a
-> note of your new password. *
+2.  In order to ensure that node-red will restart automatically in the
+    event of reboots and crashes, you should enable the nodered service
+    with the command:\
+    sudo systemctl enable nodered.service
 
-1.  Start Node-Red on the Pi: with the command: **node-red-start**.
-
-***FYI**: When the Node-Red app starts on the Pi, the last action it
-performs is to start a logging function. You can exit this logging, if
-needed, by pressing Ctrl-C. This will not stop Node-Red itself. If/When
-you want to stop Node-Red, you need to issue the command:
-node-red-stop.*
+3.  Finally, start Node-Red on the Pi with the command: node-red-start\
+    ***FYI**: When the Node-Red app starts on the Pi, the last action it
+    performs is to start a logging function. You can exit this logging,
+    if needed, by pressing Ctrl-c. This will not stop Node-Red itself.
+    If/When you want to stop Node-Red, you need to issue the command:
+    node-red-stop.*
 
 ### Part VI: Create Raspberry Pi Node-Red Flows
 
@@ -901,8 +948,8 @@ as a part of the message payload. Ready? Let’s begin.
     height="0.2981288276465442in"}.
 
 7.  At this point, verify that your Sense Hat is producing output by
-    clicking ![](./media/image36.png){width="0.8387325021872266in"
-    height="0.2012959317585302in"}.
+    clicking ![](./media/image36.png){width="1.0466458880139982in"
+    height="0.2511953193350831in"}.
 
 8.  On the right side of the page you should see a tab labeled “debug”.
     Click on that tab and you should see a tremendous amount of data
@@ -965,8 +1012,8 @@ added to the switch node.*
     data limit that is imposed on a free IoT service. This is also a
     consideration for your clients as the IoT service does have a charge
     that is based upon data transmission. To deal with this, add and
-    connect two **delay** nodes to the output of the switch node. One
-    for the environment topic and one for the motion topic.
+    connect **delay** nodes to the environment and motion outputs of the
+    switch node.
 
 2.  For each delay node, open the settings and set the action to **Limit
     rate to.**
@@ -1046,8 +1093,8 @@ added to the switch node.*
     from the Bluemix application. You will need to configure the node by
     opening settings and configuring as follows:
 
-    -   ![](./media/image44.png){width="3.4763888888888888in"
-        height="2.8694444444444445in"}Again, because we defined the
+    -   ![](./media/image44.png){width="3.388888888888889in"
+        height="2.814583333333333in"}Again, because we defined the
         Raspberry Pi as a Gateway device, you need to connect as a
         **Gateway**.
 
@@ -1170,14 +1217,16 @@ Part VII: Deploy and validate success
 
 -   In the Bluemix application, use the inject nodes to verify that the
     Sense Hat LED reacts appropriately when you press the inject
-    buttons. Be sure that all three injections work properly.
+    buttons. Be sure that all four injections work properly.
 
-> ![](./media/image46.png){width="1.5916666666666666in"
-> height="1.275in"}If they do not, check the debug output from the
-> function node that formats the data for the Sense Hat. In the output
-> data, you should verify that the **eventOrCommandType** is set to the
-> correct command type (alarm or message). You should also verify that
-> the **payload** looks correct.
+> ![](./media/image46.png){width="1.648918416447944in"
+> height="1.3402537182852143in"}
+>
+> If they do not, check the debug output from the function node that
+> formats the data for the Sense Hat. In the output data, you should
+> verify that the **eventOrCommandType** is set to the correct command
+> type (alarm or message). You should also verify that the **payload**
+> looks correct.
 >
 > For the alarm command, it should look like this:
 >
@@ -1223,3 +1272,26 @@ Part VII: Deploy and validate success
 > HUMIDITY: 34.74\
 > PRESSURE: 991.11\
 > TIMESENT: "TIMESTAMP"
+
+Useful Resources:
+=================
+
+-   Raspberry Pi:\
+    <https://www.raspberrypi.org/>
+
+-   Installing Raspberry Pi Operating Systems:\
+    <https://www.raspberrypi.org/downloads/>
+
+-   Node-Red on Raspberry Pi:\
+    <https://nodered.org/docs/hardware/raspberrypi.html>
+
+-   Raspberry Pi 3 Raspbian Jessie with WiFi, ssh, headless setup with
+    no keyboard or ethernet:\
+    <https://caffinc.github.io/2016/12/raspberry-pi-3-headless/>
+
+-   Parts for IoT experimentation:\
+    <https://www.adafruit.com>\
+    <https://www.sparkfun.com/>\
+    <http://www.canakit.com/>
+
+

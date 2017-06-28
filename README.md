@@ -695,8 +695,8 @@ Ready? Let’s begin.
 
 6.  On the right side of the page you should see a tab labeled “debug”.
     Click on that tab and you should see data flowing into your debug
-    node from the ibmiot nodes. If the Raspberry Pi side of this
-    application is up and running
+    node from the ibmiot nodes, when the Raspberry Pi side of this 
+    application is up and deployed.
 
 7.  On the right side of the debug node you will see a green toggle
     button ![](./media/image41.png){width="0.5203937007874015in"

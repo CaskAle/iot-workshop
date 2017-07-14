@@ -54,4 +54,4 @@ prerequisite activities. Specifically, you should have:
 If you do not have these, please request assistance ASAP in order to get
 your system prepared as you will not have time to complete the exercise.
 
-Full Instructions are found in the file "STSA-Workshop1-RaspberryPi-and-IOT.pdf"
+Full Instructions are found in the file ![](./STSA-Workshop1-RaspberryPi-and-IOT.pdf)

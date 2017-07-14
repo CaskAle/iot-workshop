@@ -1,10 +1,9 @@
-![](./media/image1.jpg){width="4.464444444444444in"
-height="1.3666666666666667in"}
+![](./media/image1.jpg)
 
 Workshop 1: Raspberry Pi and IoT
 ================================
 
-Objective: 
+Objective:
 ===========
 
 The purpose of this workshop is to get you started working with Bluemix,
@@ -18,7 +17,7 @@ to try and complete the exercise on your own, follow the Jedi Master
 path. Otherwise, if you prefer a more guided approach, choose the Jedi
 Padowan path. Choose wisely and have fun.
 
-### Total time to complete: 1.5 - 2 Hours 
+### Total time to complete: 1.5 - 2 Hours
 
 I.  Create the Bluemix Application Space (17 minutes)
 
@@ -695,7 +694,7 @@ Ready? Let’s begin.
 
 6.  On the right side of the page you should see a tab labeled “debug”.
     Click on that tab and you should see data flowing into your debug
-    node from the ibmiot nodes, when the Raspberry Pi side of this 
+    node from the ibmiot nodes, when the Raspberry Pi side of this
     application is up and deployed.
 
 7.  On the right side of the debug node you will see a green toggle
@@ -1318,5 +1317,3 @@ Useful Resources:
     <https://www.adafruit.com>\
     <https://www.sparkfun.com/>\
     <http://www.canakit.com/>
-
-

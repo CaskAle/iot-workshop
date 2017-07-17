@@ -38,7 +38,7 @@ VIII. Deploy and validate success
 Prerequisites:
 ==============
 
-• You must have a Bluemix account
+• You must have a [Bluemix account](https://www.bluemix.net).
 
 • You must have an instance of the [Internet of Things Platform service](https://console.bluemix.net/catalog/services/internet-of-things-platform).
 

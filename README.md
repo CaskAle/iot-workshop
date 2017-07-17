@@ -46,7 +46,7 @@ Prerequisites:
 
 • You must have a Raspberry Pi and a Sense HAT.
 
-• You should have an SSH terminal program for connecting to the Raspberry Pi. If you are using a MacOS or Linux system, you are ready. If you are using a Windows system, install the PuTTY application, which is available from the IBM Standard Software installer.
+• You should have an SSH terminal program for connecting to the Raspberry Pi. If you are using a MacOS or Linux system, you are ready. If you are using a Windows system, install the PuTTY application, which is available at http://www.putty.org Software installer.
 
 Full Instructions are found in the file:
 ![STSA-Workshop1-RaspberryPi-and-IOT.pdf](./STSA-Workshop1-RaspberryPi-and-IOT.pdf)

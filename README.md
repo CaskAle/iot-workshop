@@ -19,40 +19,34 @@ Padowan path. Choose wisely and have fun.
 
 ### Total time to complete: 1.5 - 2 Hours
 
-I.  Create the Bluemix Application Space (17 minutes)
+I. Create an Internet of Things Platform service
 
-II. Define IoT devices to Internet of Things Service (10 minutes)
+II. Define the Raspberry Pi device to the IoT service
 
-III. Create dashDB table for environment data (8 minutes)
+III. Create a dashDB for Analytics service
 
-IV. Build Bluemix Node-Red flows (40 minutes)
+IV. Create a dashDB table for environment data
 
-V.  Connect to Raspberry Pi and Start Node-Red (5 minutes)
+V. Create a Bluemix Node-RED Application space
 
-VI. Build Raspberry Pi Node-Red flows (40 minutes)
+VI. Create the Raspberry Pi Node-RED flows
 
-VII. Deploy and validate success (8 minutes)
+VII. Create the Bluemix Node-RED flows
 
-***Note**: In the interest of time, it will be necessary to build the
-Bluemix and Raspberry Pi Node-Red flows concurrently. One system will be
-used to build the Bluemix portion, while another is used to build the
-Raspberry Pi portion. During this time, all three team members should
-work to oversee the overall project and provide each other guidance and
-debugging support.*
+VIII. Deploy and validate success
 
 Prerequisites:
 ==============
 
-This workshop assumes that you have completed the STSA event
-prerequisite activities. Specifically, you should have:
+• You must have a Bluemix account
 
-1.  An SSH terminal program for connecting to the Raspberry Pi. If you
-    are using a MacOS or Linux based system, you are ready to go. If
-    using Windows, you should have installed the PuTTY application
-    available on the IBM Standard Software installer.
+• You must have an instance of the Internet of Things Platform service.
 
-If you do not have these, please request assistance ASAP in order to get
-your system prepared as you will not have time to complete the exercise.
+• You must have an instance of the dashDB for Analytics service.
+
+• You must have a Raspberry Pi and a Sense HAT.
+
+• You should have an SSH terminal program for connecting to the Raspberry Pi. If you are using a MacOS or Linux system, you are ready. If you are using a Windows system, install the PuTTY application, which is available from the IBM Standard Software installer.
 
 Full Instructions are found in the file:
 ![STSA-Workshop1-RaspberryPi-and-IOT.pdf](./STSA-Workshop1-RaspberryPi-and-IOT.pdf)

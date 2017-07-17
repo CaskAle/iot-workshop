@@ -7,11 +7,11 @@ Objective:
 ===========
 
 The purpose of this workshop is to get you started working with Bluemix,
-Node-Red, Watson IoT, and a Raspberry Pi. You will be defining a
+Node-RED, Watson IoT, and a Raspberry Pi. You will be defining a
 Raspberry Pi as an IoT device in the Watson IoT service. Following that,
-you will use Node-Red to create an application on the Pi that reports
+you will use Node-RED to create an application on the Pi that reports
 sensor information (temperature, humidity, barometric pressure, etc.) to
-another Node-Red application running on Bluemix. Two sets of
+another Node-RED application running on Bluemix. Two sets of
 instructions are provided. If you have prior experience and would like
 to try and complete the exercise on your own, follow the Jedi Master
 path. Otherwise, if you prefer a more guided approach, choose the Jedi

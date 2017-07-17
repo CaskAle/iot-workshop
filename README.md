@@ -40,9 +40,9 @@ Prerequisites:
 
 • You must have a Bluemix account
 
-• You must have an instance of the Internet of Things Platform service.
+• You must have an instance of the [Internet of Things Platform service](https://console.bluemix.net/catalog/services/internet-of-things-platform).
 
-• You must have an instance of the dashDB for Analytics service.
+• You must have an instance of the [dashDB for Analytics service](https://console.bluemix.net/catalog/services/dashdb).
 
 • You must have a Raspberry Pi and a Sense HAT.
 

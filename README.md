@@ -1,6 +1,4 @@
-![](./media/image1.jpg)
-
-Workshop 1: Raspberry Pi and IoT
+Workshop 1: Bluemix, IoT, & Raspberry Pi
 ================================
 
 Objective:
@@ -46,7 +44,9 @@ Prerequisites:
 
 • You must have a Raspberry Pi and a Sense HAT.
 
+• You must be able to connect to your Raspberry Pi on a network and you need to know it’s ip address.
+
 • You should have an SSH terminal program for connecting to the Raspberry Pi. If you are using a MacOS or Linux system, you are ready. If you are using a Windows system, install the PuTTY application, which is available at http://www.putty.org Software installer.
 
 Full Instructions are found in the file:
-[STSA-Workshop1-RaspberryPi-and-IOT.pdf](./STSA-Workshop1-RaspberryPi-and-IOT.pdf)
+[Workshop1-RaspberryPi-and-IOT.pdf](./Workshop1-RaspberryPi-and-IOT.pdf)

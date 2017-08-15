@@ -21,9 +21,9 @@ I. Create an Internet of Things Platform service
 
 II. Define the Raspberry Pi device to the IoT service
 
-III. Create a dashDB for Analytics service
+III. Create a Db2 Warehouse on Cloud service
 
-IV. Create a dashDB table for environment data
+IV. Create a Db2 Warehouse table for environment data
 
 V. Create a Bluemix Node-RED Application space
 

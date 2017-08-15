@@ -40,7 +40,7 @@ Prerequisites:
 
 • You must have an instance of the [Internet of Things Platform service](https://console.bluemix.net/catalog/services/internet-of-things-platform).
 
-• You must have an instance of the [dashDB for Analytics service](https://console.bluemix.net/catalog/services/dashdb).
+• You must have an instance of the [Db2 Warehouse on Cloud service](https://console.bluemix.net/catalog/services/dashdb).
 
 • You must have a Raspberry Pi and a Sense HAT.
 
@@ -49,4 +49,4 @@ Prerequisites:
 • You should have an SSH terminal program for connecting to the Raspberry Pi. If you are using a MacOS or Linux system, you are ready. If you are using a Windows system, install the PuTTY application, which is available at http://www.putty.org Software installer.
 
 Full Instructions are found in the file:
-[Workshop1-RaspberryPi-and-IOT.pdf](./Workshop1-RaspberryPi-and-IOT.pdf)
+[Workshop1-RaspberryPi-and-IOT.pdf](Workshop1-RaspberryPi-and-IOT.pdf)

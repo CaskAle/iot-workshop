@@ -49,4 +49,4 @@ Prerequisites:
 • You should have an SSH terminal program for connecting to the Raspberry Pi. If you are using a MacOS or Linux system, you are ready. If you are using a Windows system, install the PuTTY application, which is available at http://www.putty.org Software installer.
 
 Full Instructions are found in the file:
-[Workshop1-RaspberryPi-and-IOT.pdf](Workshop1-RaspberryPi-and-IOT.pdf)
+[Workshop1-RaspberryPi-and-IoT.pdf](Workshop1-RaspberryPi-and-IoT.pdf)

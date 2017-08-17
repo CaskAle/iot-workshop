@@ -1,4 +1,4 @@
-Workshop 1: Bluemix, IoT, & Raspberry Pi
+Workshop 1: Node-RED, IoT, & Raspberry Pi
 ================================
 
 Objective:

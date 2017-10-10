@@ -3,6 +3,7 @@ echo 'Build of raspberrypi-'$1' begins.'
 dd bs=4M of=/dev/mmcblk0 if=custom-pi.img
 partprobe
 mount /dev/mmcblk0p2 /mnt
+cp ./wpa_supplicant.conf /mnt/etc/wpa_supplicant/
 sed -i -e "s/XXX/$1/g" /mnt/etc/hostname
 sed -i -e "s/XXX/$1/g" /mnt/etc/hosts
 sed -i -e "s/XXX/$1/g" /mnt/etc/dhcpcd.conf

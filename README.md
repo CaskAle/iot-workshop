@@ -1,4 +1,4 @@
-# Node-RED, IoT, & Raspberry Pi Workshop
+# Raspberry Pi IoT Workshop
 
 ## Objective
 

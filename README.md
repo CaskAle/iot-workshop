@@ -32,7 +32,7 @@ path. Otherwise, if you prefer a more guided approach, choose the guided path.
 
 - You must be able to connect to your Raspberry Pi on a network and you need to know it’s ip address or hostname.
 
-- The Node.js and Node-Red on the Raspberry Pi must be updated by running the command: update-nodejs-and-nodered in a terminal on the Raspberry Pi.
+- The Node.js and Node-RED on the Raspberry Pi must be updated by running the command: update-nodejs-and-nodered in a terminal on the Raspberry Pi.
 
 - You should have an ssh terminal program for connecting to the Raspberry Pi. If you are using a MacOS or Linux system, you are ready to go. If you are using a Windows system, install the PuTTY application, which is available at http://www.putty.org Software installer.
 

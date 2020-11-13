@@ -1,8 +1,6 @@
-Node-RED, IoT, & Raspberry Pi Workshop
-================================
+# Node-RED, IoT, & Raspberry Pi Workshop
 
-Objective:
-===========
+## Objective
 
 The purpose of this workshop is to get you started working with IBM Cloud,
 Node-RED, Watson IoT, and a Raspberry Pi. You will be defining a
@@ -15,7 +13,7 @@ to try and complete the exercise on your own, follow the Jedi Master
 path. Otherwise, if you prefer a more guided approach, choose the Jedi
 Padowan path. Choose wisely and have fun.
 
-### Total time to complete: 1.5 - 2 Hours
+## Total time to complete: 1.5 - 2 Hours
 
 I. Create an Internet of Things Platform service
 
@@ -33,22 +31,21 @@ VII. Create the IBM Cloud Node-RED flows
 
 VIII. Deploy and validate success
 
-Prerequisites:
-==============
+## Prerequisites
 
-• You must have a [IBM Cloud account](https://cloud.ibm.com).
+- You must have a [IBM Cloud account](https://cloud.ibm.com).
 
-• You must have an instance of the [Internet of Things Platform service](https://console.IBM Cloud.net/catalog/services/internet-of-things-platform).
+- You must have an instance of the [Internet of Things Platform service](https://console.IBM Cloud.net/catalog/services/internet-of-things-platform).
 
-• You must have an instance of the [Db2 Warehouse on Cloud service](https://console.IBM Cloud.net/catalog/services/dashdb).
+- You must have an instance of the [Db2 Warehouse on Cloud service](https://console.IBM Cloud.net/catalog/services/dashdb).
 
-• You must have a Raspberry Pi and a Sense HAT.
+- You must have a Raspberry Pi and a Sense HAT.
 
-• You must be able to connect to your Raspberry Pi on a network and you need to know it’s ip address or hostname.
+- You must be able to connect to your Raspberry Pi on a network and you need to know it’s ip address or hostname.
 
-• The Node.js and Node-Red on the Raspberry Pi must be updated by running the command: update-nodejs-and-nodered in a terminal on the Raspberry Pi.
+- The Node.js and Node-Red on the Raspberry Pi must be updated by running the command: update-nodejs-and-nodered in a terminal on the Raspberry Pi.
 
-• You should have an ssh terminal program for connecting to the Raspberry Pi. If you are using a MacOS or Linux system, you are ready to go. If you are using a Windows system, install the PuTTY application, which is available at http://www.putty.org Software installer.
+- You should have an ssh terminal program for connecting to the Raspberry Pi. If you are using a MacOS or Linux system, you are ready to go. If you are using a Windows system, install the PuTTY application, which is available at http://www.putty.org Software installer.
 
-Full Instructions are found in the file:
+## Full Instructions are found in the file:
 [Workshop1-RaspberryPi-and-IoT.pdf](Workshop1-RaspberryPi-and-IoT.pdf)

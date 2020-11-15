@@ -34,6 +34,6 @@ path. Otherwise, if you prefer a more guided approach, choose the guided path.
 
 - The Node.js and Node-RED on the Raspberry Pi must be updated by running the command: update-nodejs-and-nodered in a terminal on the Raspberry Pi.
 
-- You should have an ssh terminal program for connecting to the Raspberry Pi. If you are using a MacOS or Linux system, you are ready to go. If you are using a Windows system, install the PuTTY application, which is available at http://www.putty.org Software installer.
+- You should have an ssh terminal program for connecting to the Raspberry Pi. If you are using a MacOS or Linux system, you are ready to go. If you are using a Windows system, install the PuTTY application, which is available at <http://www.putty.org> Software installer.
 
-Full Instructions are found in the file [raspberry-pi-and-iot-workshop.pdf](raspberry-pi-and-iot-workshop.pdf).
+Full Instructions are found in the file [raspberry-pi-and-workshop.pdf](raspberry-pi-iot-workshop.pdf).

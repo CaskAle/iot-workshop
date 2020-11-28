@@ -1,14 +1,14 @@
 # IoT Workshop
 
 The Internet of Things (IoT) links physical things, such as weather sensors and smartphones, to applications. The connection allows applications to provide functionality based on the information it can derive from the things that are connected. IoT has applications across many industries, including government, insurance, energy, and smart homes.
-In this workshop you will work with IBM Cloud, Node-RED, Watson IoT, and a Raspberry Pi to build the foundation of an application that uses sensor data, such as temperature, humidity, and barometric pressure.  You will explore ways in which you can programatically control devices based upon these sensor readings.
+In this workshop you will work with IBM Cloud, Node-RED, and a Raspberry Pi to build the foundation of an application that uses sensor data, such as temperature, humidity, and barometric pressure.  You will explore ways in which you can programatically control devices based upon these sensor readings.
 
 ## Objectives
 
-The purpose of this workshop is to get you started working with IBM Cloud, Node-RED, Watson IoT, and a Raspberry Pi.  
+The purpose of this workshop is to get you started working with IBM Cloud, Node-RED, the Internet of Things service, and a Raspberry Pi.  
 
-- First, you will use a tool called Node-RED to create an application on the Raspberry Pi that collects sensor information (temperature, humidity, and barometric pressure).
-- Following that, you will register the Raspberry Pi as an device in the IBM Cloud Watson IoT service.  
+- First, you will use a tool called [Node-RED](https://nodered.org/) to create an application on the Raspberry Pi that collects sensor information (temperature, humidity, and barometric pressure).
+- Following that, you will register the Raspberry Pi as an device in the IBM Cloud [Internet of Things service](https://cloud.ibm.com/services/iotf-service).  
 - Finally, Node-RED application in the IBM CLoud that will store and act on the sensor data it receives from the Raspberry Pi.  
 
 Two sets of instructions are provided for this workshop.  If you have prior experience and would like to try and complete the exercise on your own, follow the [Advanced path](#advanced-path).  Otherwise, if you prefer a more guided approach, choose the [Guided path](#guided-path).
@@ -24,13 +24,17 @@ In order to complete this workshop, you will need:
 - It is assumed that your Raspberry Pi is connected to a network that provides internet access as well as the ability to be accessed remotely via ssh and http.
 
 ## Software Setup
+
 - Update the Raspberry Pi OS  
 `sudo apt update`  
 `sudo apt upgrade`
+- Install additional sofwware  
+`sudo apt install -y sense-hat build-essential git`
 - Install/Update NodeJS/Node-Red  
-`update-nodejs-and-nodered`
-
-## Advanced Path
+`bash <(curl -sL https://raw.githubusercontent.com/node-red/linux-installers/master/deb/update-nodejs-and-nodered)`  
+Note: be sure to answer `y` when asked about installing the Pi-specific nodes.
+- Install additional Node-RED nodes for thense Hat and the IoT   
+`npm i --unsafe-perm --save --no-progress --no-update-notifier --no-audit --no-fund node-red-node-pi-sense-hat node-red-contrib-ibm-watson-iot`
 
 ## Guided Path
 
@@ -81,7 +85,7 @@ Note: When you close the switch node settings, you will now see three separate c
     20. Now, connect the output of the two delay nodes and the final switch connection (joystick topic) to the debug node.  
 Note: You can have several nodes connecting to a single connection point on another node.
     21. Redeploy the application by once again clicking deploy and you should see a dramatic decrease in the number of messages received.  Note: You will only see joystick topics when you actually use the Sense Hat joystick.  For that reason, there is no need to delay them like the other topics.
-    22. Finally, it is time to send these messages to your IoT Platform service so that they can be accessed from your Bluemix application.  For this, you will need to pull three Watson IoT output nodes into your workspace and position them to the right of your delay nodes.
+    22. Finally, it is time to send these messages to your IoT Platform service so that they can be accessed from your Bluemix application.  For this, you will need to pull three Internet of Things output nodes into your workspace and position them to the right of your delay nodes.
     23. Each IoT node will send a separate event type to the IoT Platform service.  You will need to configure them by opening settings and configuring as follows:
 
     • Because we defined the Raspberry Pi as a Gateway device, you need to connect as a Gateway.
@@ -93,6 +97,8 @@ Note: You can have several nodes connecting to a single connection point on anot
     25. Once again, deploy the application.  If everything has gone well, you will see a green dot below the IoT nodes that indicates they are now connected to the IoT Platform service.
     26. This concludes flow 1.
 
-## Register Raspberry Pi with the Watson IoT Service
+### Register the Raspberry Pi with the Internet of Things service
 
-## Create IBM Cloud Application
+### Create IBM Cloud Node-RED Application
+
+## Advanced Path

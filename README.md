@@ -37,14 +37,16 @@ Note: be sure to answer `y` when asked about installing the Pi-specific nodes.
 `npm install node-red-node-pi-sense-hat node-red-contrib-ibm-watson-iot`
 
 ## Starting Node-RED
+
 Note: When the Node-RED app starts, the last action it performs is to start a logging function.  You can exit this logging, if needed, by pressing Ctrl-c.  This will not stop Node-RED itself.  If/When you want to stop Node-RED, you need to issue the command: node-red-stop.
 
 [Learn more about Node-RED on a Raspberry Pi here](https://nodered.org/docs/getting-started/raspberrypi)
+
 ### Create Raspberry Pi Application
 
 ---
+
 ## Guided Path
----
 
 In this portion of the workshop you will create a Node-RED application on the Raspberry Pi that will collect sensor data from a device called a Sense Hat that is attached to the Pi.  You will then forward that data to your IoT Platform service so that it can be used by a corresponding Node-RED application you will create in IBM Cloud.  There are three different types (environment, motion, & joystick) of sensor data and each type will be sent to the IoT Platform service with a specific event type so that different actions might be taken depending on the event type.  Additionally, this application will be able to receive commands sent from the IBM Cloud application that will control the 8x8 LED matrix that is part of the Sense Hat device.  One command (alarm) will turn the entire matrix into a solid color that is provided as a part of the message payload.  The other command (message) will scroll a text message across the matrix.  The message, the text color, and the background color will all be provided as a part of the message payload.
 
@@ -108,8 +110,8 @@ Note: You can have several nodes connecting to a single connection point on anot
 ### Create IBM Cloud Node-RED Application
 
 ---
+
 ## Advanced Path
----
 
 ### Create an Internet of Things Platform service and define the Raspberry Pi device
 
@@ -232,6 +234,6 @@ The **alarm** command should light the entire 8x8 LED matrix on the Sense Hat to
                    message:”desired message”}}
   ```
 
-## Validation and Testing
 ---
 
+## Validation and Testing

@@ -187,8 +187,9 @@ The **alarm** command should light the entire 8x8 LED matrix on the Sense Hat to
 ### Create IBM Cloud Node-RED Flows
 
 - Create the following Node-RED flow in your IBM Cloud Node-RED application
+![Cloud Final Flow](/images/cloud-final-flow.png)
 - Receive the three different event types (environment, motion, & joystick)
-- Format the incoming environment data into the appropriate format for the dashDB node
+- Format the incoming environment data into the appropriate format for the Db2 node
 - The incoming environment event will have the following payload:
 
   ``` javascript
@@ -197,7 +198,7 @@ The **alarm** command should light the entire 8x8 LED matrix on the Sense Hat to
                    pressure: 994.84}}
   ```
 
-- The dashDB node will need the following payload based upon the table created earlier
+- The Db2 node will need the following payload based upon the table created earlier
 
   ``` javascript
   msg.payload: {SENSORID : deviceId,

@@ -37,11 +37,14 @@ Note: be sure to answer `y` when asked about installing the Pi-specific nodes.
 `npm install node-red-node-pi-sense-hat node-red-contrib-ibm-watson-iot`
 
 ## Starting Node-RED
+Note: When the Node-RED app starts, the last action it performs is to start a logging function.  You can exit this logging, if needed, by pressing Ctrl-c.  This will not stop Node-RED itself.  If/When you want to stop Node-RED, you need to issue the command: node-red-stop.
 
 [Learn more about Node-RED on a Raspberry Pi here](https://nodered.org/docs/getting-started/raspberrypi)
 ### Create Raspberry Pi Application
 
+---
 ## Guided Path
+---
 
 In this portion of the workshop you will create a Node-RED application on the Raspberry Pi that will collect sensor data from a device called a Sense Hat that is attached to the Pi.  You will then forward that data to your IoT Platform service so that it can be used by a corresponding Node-RED application you will create in IBM Cloud.  There are three different types (environment, motion, & joystick) of sensor data and each type will be sent to the IoT Platform service with a specific event type so that different actions might be taken depending on the event type.  Additionally, this application will be able to receive commands sent from the IBM Cloud application that will control the 8x8 LED matrix that is part of the Sense Hat device.  One command (alarm) will turn the entire matrix into a solid color that is provided as a part of the message payload.  The other command (message) will scroll a text message across the matrix.  The message, the text color, and the background color will all be provided as a part of the message payload.
 
@@ -104,7 +107,9 @@ Note: You can have several nodes connecting to a single connection point on anot
 
 ### Create IBM Cloud Node-RED Application
 
+---
 ## Advanced Path
+---
 
 ### Create an Internet of Things Platform service and define the Raspberry Pi device
 
@@ -112,135 +117,120 @@ Note: You can have several nodes connecting to a single connection point on anot
 - In your newly created IoT Platform service, define a new gateway device type called **PiGateway**
 - Add a new gateway device called **myPiGateway** using the newly defined PiGateway device type
 
-**Note:** The workshop treats the Raspberry Pi as an edge gateway and the attached Sense Hat as a downstream sensor device.  It is not necessary to define the Sense Hat device to the IoT Platform service as the gateway device will do it automatically when the Sense Hat connects through it.
+  **Note:** The workshop treats the Raspberry Pi as an edge gateway and the attached Sense Hat as a downstream sensor device.  It is not necessary to define the Sense Hat device to the IoT Platform service as the gateway device will do it automatically when the Sense Hat connects through it.
 
 ### Create a DB2 database service and a table to store sensor data
 
 - Create a Db2 database service in your IBM Cloud space
 - Create a database table called **SENSEDATA** containing the following columns and data types
 
-  | **Column Name** | **Data Type** |
-  | ---             | ---           |
-  | SENSORID        | VARCHAR(20)   |
+  | **Column Name** | **Data Type** | **Length** |
+  | ---             | ---           | ---        |
+  | SENSORID        | VARCHAR       | 20
   | TEMPERATURE     | DOUBLE        |
   | HUMIDITY        | DOUBLE        |
   | PRESSURE        | DOUBLE        |
   | TIMESENT        | TIMESTAMP     |
 
-**Note:** The name of the table and columns are an important element of later steps so be sure to double check your spelling.
+  **Note:** The name of the table and columns are an important element of later steps so be sure to double check your spelling.
 
 ### Create a Node-RED Application in your IBM Cloud space
 
-- Create a new Node-RED application from the Node-RED boilerplate.  Instructions in these workshops assume that the name of the application is myWorkshop-xxx (replace xxx with your initials to help ensure a unique name).
+- Create a new Node-RED application from the Node-RED boilerplate.  Instructions in these workshops assume that the name of the application is myWorkshop-xxx (replace xxx with your initials to help ensure a unique name)
 - Connect your IoT and Db2 Warehouse services to your new application
 
 ### Create Raspberry Pi Node-RED Flows
-    1. Apply power to your Raspberry Pi by attaching a standard microUSB cable between the microUSB connector on the Raspberry Pi and a power source such as a laptop or USB power block. (booting takes less than a minute).
-    2. Connect to your Raspberry Pi using ssh.  Your Pi can be reached at via it’s IP address by using the following format: ssh pi@<ip address>. 
-Note: Depending on your system configuration, you may be able to connect to your laptop by name rather than by ip address.  To do this, you append “.local” to your Raspberry Pi hostname.  For example: ssh pi@raspberrypi.local (pi is the default username on the Raspberry Pi).
-    3. The Raspberry Pi credential are:
-User ID: pi
-Password: raspberry
-    4. In order to ensure that Node-RED will restart automatically in the event of reboots and crashes, you should enable the Node-RED service with the command: 
-sudo systemctl enable nodered.service
-    5. Finally, start Node-RED on the Pi with the command:
-node-red-start
-Note: When the Node-RED app starts, the last action it performs is to start a logging function.  You can exit this logging, if needed, by pressing Ctrl-c.  This will not stop Node-RED itself.  If/When you want to stop Node-RED, you need to issue the command: node-red-stop.
-    6. Create the following Node-RED flow on the Raspberry Pi:
 
-    • Break the Sense Hat sensor data into three different event types (environment, motion, & joystick).
-    • Limit the number of environment and motion events that are sent to the IoT nodes to 1 every 5 seconds.  Otherwise you will quickly overwhelm the data transfer limits imposed by our free IoT Platform service accounts.
-    • Send the data to the IoT Platform service as one of three event types.
-    • Receive incoming IoT commands called alarm and message.  The alarm command should light the entire 8x8 LED matrix on the Sense Hat to a solid color provided in the incoming IoT command.  The message command should scroll a message across the LED matrix.  The message, the text color, and the background color are all provided in the incoming IoT command.
-    • Format the incoming command data into the appropriate format for the Sense Hat node.
-The incoming alarm command will have the following payload:
+- Create the following Node-RED flow on the Raspberry Pi:
+![Pi Final Flow](/images/pi-final-flow.png)
 
-``` json
-msg.command:    "alarm"
-msg.format:     "json"
-msg.deviceType: "SenseHat"
-msg.deviceId:   "mySenseHat"
-msg.payload:    {d:{color:msg.payload}}
-```
+- Break the Sense Hat sensor data into three different event types (environment, motion, & joystick).
+- Limit the number of environment and motion events that are sent to the IoT nodes to 1 every 5 seconds.  Otherwise you will quickly overwhelm the data transfer limits imposed by the free IoT Platform service
+- Send the data to the IoT Platform service as one of three event types.
+- Receive incoming IoT commands called **alarm** and **message**  
+The **alarm** command should light the entire 8x8 LED matrix on the Sense Hat to a solid color provided in the incoming IoT command.  The incoming alarm command will have the following payload:
 
-The incoming message command will have the following payload:
+  ``` javascript
+  msg.command:    "alarm"
+  msg.format:     "json"
+  msg.deviceType: "SenseHat"
+  msg.deviceId:   "mySenseHat"
+  msg.payload:    {d:{color:msg.payload}}
+  ```
 
-``` json
-msg.command:    "message"
-msg.format:     "json"
-msg.deviceType: "SenseHat"
-msg.deviceId:   "mySenseHat"
-msg.payload:    {d:{color:"blue",
-                    background:"green",
-                    message:”message text”}}
-```
+  The **message** command should scroll a message across the LED matrix.  The message, the text color, and the background color are all provided in the incoming IoT command.  The incoming message command will have the following payload:
 
-In order to set the entire 8x8 Sense Hat LED matrix to a specific color, you need to have the following string in the msg.payload *(replace color with a color choice like red, blue, green, etc)*
+  ``` javascript
+  msg.command:    "message"
+  msg.format:     "json"
+  msg.deviceType: "SenseHat"
+  msg.deviceId:   "mySenseHat"
+  msg.payload:    {d:{color:"blue",
+                      background:"green",
+                      message:”message text”}}
+  ```
 
-``` javascript
-  msg.payload = "*, *, "color"
-```
+- In order to set the entire 8x8 Sense Hat LED matrix to a specific color, you need to have the following string in the msg.payload *(replace color with a color choice like red, blue, green, etc)*
 
+  ``` javascript
+    msg.payload = "*, *, "color"
+  ```
 
+- To have a message scroll across the LED matrix, the msg format is a bit more detailed *(again, replace color with a color choice like red, blue, green, etc)*
 
-- To have a message scroll across the LED matrix, the msg format is a bit more detailed:  
-
-``` javascript
-msg.color = "color"
-msg.background = "color"
-msg.payload = "message to display"
-```
-
-(again, replacing color with a color choice like red, blue, green, etc)
+  ``` javascript
+  msg.color = "color"
+  msg.background = "color"
+  msg.payload = "message to display"
+  ```
 
 ### Create IBM Cloud Node-RED Flows
 
-    1. Create the following Node-RED flow in your IBM Cloud Node-RED application:
+- Create the following Node-RED flow in your IBM Cloud Node-RED application
+- Receive the three different event types (environment, motion, & joystick)
+- Format the incoming environment data into the appropriate format for the dashDB node
+- The incoming environment event will have the following payload:
 
-    • Receive the three different event types (environment, motion, & joystick).
-    • Format the incoming environment data into the appropriate format for the dashDB node.
-The incoming environment event will have the following payload:
-msg.payload: {d:{temperature: 35.21
-                 humidity: 38.31
-                 pressure: 994.84}}
-The dashDB node will need the following payload based upon the table created earlier:
+  ``` javascript
+  msg.payload: {d:{temperature: 35.21
+                   humidity: 38.31
+                   pressure: 994.84}}
+  ```
 
-``` json
-msg.payload: {SENSORID : deviceId,
-              TEMPERATURE : temperature,
-              HUMIDITY : humidity,
-              PRESSURE : pressure,
-              TIMESENT : 'TIMESTAMP'}
-```
+- The dashDB node will need the following payload based upon the table created earlier
 
-- Send test IoT commands called alarm and message to the Sense Hat device on the Raspberry Pi.  The three inject nodes should send a string payload with a topic that identifies the specific command being sent as follows:
-Type
-Payload
-Topic
-Name
-string
-off
-alarm
-Turn off LED
-string
-green
-alarm
-Green
-string
-red
-alarm
-Red
-string
-enter any message you like here
-message
-Send Message
-    • Set the outbound msg.eventOrCommandType to either alarm or message based upon the incoming topic type.
-    • Format the injected data into the appropriate format for the Raspberry Pi application based upon the incoming topic type:
-The alarm command will need to have the following payload:
-msg.payload: {d:{color:”desired color or off”}}
-The message command will need to have the following payload:
-msg.payload: {d:{color:”desired color”,
-                 background:”desired color”,
-                 message:”desired message”}}
-Part VIII: Deploy and validate success
-    • Please skip ahead to the common Part VII Section at the bottom of this document.
+  ``` javascript
+  msg.payload: {SENSORID : deviceId,
+                TEMPERATURE : temperature,
+                HUMIDITY : humidity,
+                PRESSURE : pressure,
+                TIMESENT : 'TIMESTAMP'}
+  ```
+
+- Send test IoT commands called alarm and message to the Sense Hat device on the Raspberry Pi.  The inject nodes should send a string payload with a topic that identifies the specific command being sent as follows:
+
+  | Type   | Payload     | Topic   | Name         |
+  | ---    | ---         | ---     | ---          |
+  | string | off         | alarm   | Turn off LED |
+  | string | green       | alarm   | Green        |
+  | string | red         | alarm   | Red          |
+  | string | "any text"  | message | Send Message |
+
+- Set the outbound msg.eventOrCommandType to either alarm or message based upon the incoming topic type.  Format the injected data into the appropriate format for the Raspberry Pi application based upon the incoming topic type:  
+  The alarm topic will need to have the following payload
+
+  ``` javascript
+  msg.payload: {d:{color:”desired color or off”}}
+  ```
+
+  The message topic will need to have the following payload
+
+  ``` javascript
+  msg.payload: {d:{color:”desired color”,
+                   background:”desired color”,
+                   message:”desired message”}}
+  ```
+
+## Validation and Testing
+---
+

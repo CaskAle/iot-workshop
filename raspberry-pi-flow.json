@@ -1,15 +1,15 @@
 [
   {
-    "id": "3f61152e.c7f58a",
+    "id": "d80f5f93.c7c3b",
     "type": "tab",
     "label": "Raspberry Pi Flows",
     "disabled": false,
     "info": ""
   },
   {
-    "id": "3dcc535b.527dbc",
+    "id": "5cc11d0a.1e98e4",
     "type": "rpi-sensehat in",
-    "z": "3f61152e.c7f58a",
+    "z": "d80f5f93.c7c3b",
     "name": "",
     "motion": true,
     "env": true,
@@ -18,14 +18,14 @@
     "y": 160,
     "wires": [
       [
-        "c9a36b8e.d82898"
+        "a7fda174.e426a"
       ]
     ]
   },
   {
-    "id": "248bc84d.2892f8",
+    "id": "e7854a3f.274b3",
     "type": "wiotp out",
-    "z": "3f61152e.c7f58a",
+    "z": "d80f5f93.c7c3b",
     "authType": "g",
     "qs": "false",
     "qsDeviceId": "",
@@ -41,21 +41,26 @@
     "wires": []
   },
   {
-    "id": "f19aabd1.c8de28",
+    "id": "18bf7d7a.b2ff7b",
     "type": "debug",
-    "z": "3f61152e.c7f58a",
-    "name": "debug : sense hat sensors",
+    "z": "d80f5f93.c7c3b",
+    "name": "debug : sensors",
     "active": false,
-    "console": "false",
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
     "complete": "true",
-    "x": 760,
+    "targetType": "full",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 720,
     "y": 280,
     "wires": []
   },
   {
-    "id": "5869651b.986efc",
+    "id": "cf5621ff.ecb778",
     "type": "wiotp out",
-    "z": "3f61152e.c7f58a",
+    "z": "d80f5f93.c7c3b",
     "authType": "g",
     "qs": "false",
     "qsDeviceId": "",
@@ -71,9 +76,9 @@
     "wires": []
   },
   {
-    "id": "569aefff.7c50c",
+    "id": "74b08143.132778",
     "type": "wiotp out",
-    "z": "3f61152e.c7f58a",
+    "z": "d80f5f93.c7c3b",
     "authType": "g",
     "qs": "false",
     "qsDeviceId": "",
@@ -89,9 +94,9 @@
     "wires": []
   },
   {
-    "id": "c9a36b8e.d82898",
+    "id": "a7fda174.e426a",
     "type": "switch",
-    "z": "3f61152e.c7f58a",
+    "z": "d80f5f93.c7c3b",
     "name": "",
     "property": "topic",
     "propertyType": "msg",
@@ -119,60 +124,49 @@
     "y": 160,
     "wires": [
       [
-        "59acd42f.f90b5c"
+        "d694f9e8.66e38"
       ],
       [
-        "e00c52b6.59835"
+        "fdc4fa26.c15198"
       ],
       [
-        "569aefff.7c50c",
-        "f19aabd1.c8de28"
+        "74b08143.132778",
+        "18bf7d7a.b2ff7b"
       ]
     ]
   },
   {
-    "id": "f938c2cc.08d96",
+    "id": "d1833e7e.a0c168",
     "type": "rpi-sensehat out",
-    "z": "3f61152e.c7f58a",
+    "z": "d80f5f93.c7c3b",
     "name": "",
     "x": 710,
-    "y": 460,
+    "y": 440,
     "wires": []
   },
   {
-    "id": "28600a32.cf15f6",
-    "type": "debug",
-    "z": "3f61152e.c7f58a",
-    "name": "debug : sense hat LED",
-    "active": true,
-    "console": "false",
-    "complete": "true",
-    "x": 400,
-    "y": 520,
-    "wires": []
-  },
-  {
-    "id": "212f05e1.ce1c6a",
+    "id": "5cc5c0af.8b772",
     "type": "function",
-    "z": "3f61152e.c7f58a",
-    "name": "format : sense hat",
+    "z": "d80f5f93.c7c3b",
+    "name": "format message",
     "func": "d = msg.payload.d;\nif (msg.command == \"message\") {\n  msg.background=d.background;\n  msg.color=d.color;\n  msg.payload=d.message;\n}\nelse if (msg.command == \"alarm\") {\n  msg.payload=\"*,*,\" + d.color;\n}\nelse\n  msg = null;\nreturn msg;\n",
     "outputs": 1,
     "noerr": 0,
     "initialize": "",
     "finalize": "",
-    "x": 390,
-    "y": 360,
+    "x": 440,
+    "y": 440,
     "wires": [
       [
-        "f938c2cc.08d96"
+        "d1833e7e.a0c168",
+        "702f9c59.ea9b24"
       ]
     ]
   },
   {
-    "id": "6f2aaacd.5c18b4",
+    "id": "38c9cca1.6ca034",
     "type": "wiotp in",
-    "z": "3f61152e.c7f58a",
+    "z": "d80f5f93.c7c3b",
     "authType": "g",
     "deviceKey": "6cc489f3.1281c8",
     "deviceType": "SenseHat",
@@ -185,15 +179,14 @@
     "y": 360,
     "wires": [
       [
-        "212f05e1.ce1c6a",
-        "28600a32.cf15f6"
+        "5cc5c0af.8b772"
       ]
     ]
   },
   {
-    "id": "59acd42f.f90b5c",
+    "id": "d694f9e8.66e38",
     "type": "delay",
-    "z": "3f61152e.c7f58a",
+    "z": "d80f5f93.c7c3b",
     "name": "",
     "pauseType": "rate",
     "timeout": "5",
@@ -205,126 +198,71 @@
     "randomLast": "5",
     "randomUnits": "seconds",
     "drop": true,
-    "x": 460,
+    "x": 480,
     "y": 100,
     "wires": [
       [
-        "f19aabd1.c8de28"
+        "e7854a3f.274b3",
+        "18bf7d7a.b2ff7b"
       ]
     ]
   },
   {
-    "id": "a3236f2b.a6f1c",
+    "id": "cd66b321.383bb",
     "type": "comment",
-    "z": "3f61152e.c7f58a",
-    "name": "Incoming IOT commands from Watson IOT",
+    "z": "d80f5f93.c7c3b",
+    "name": "process incoming commands from cloud IoT service",
     "info": "",
-    "x": 180,
-    "y": 300,
+    "x": 210,
+    "y": 320,
     "wires": []
   },
   {
-    "id": "1833a7c6.608fa8",
+    "id": "fc3810b0.a6e2c8",
     "type": "comment",
-    "z": "3f61152e.c7f58a",
-    "name": "Send Sense Hat data to Watson IOT",
-    "info": "",
-    "x": 160,
-    "y": 60,
+    "z": "d80f5f93.c7c3b",
+    "name": "send sensor data to cloud IoT service",
+    "info": "IoT service",
+    "x": 170,
+    "y": 40,
     "wires": []
   },
   {
-    "id": "e00c52b6.59835",
+    "id": "fdc4fa26.c15198",
     "type": "delay",
-    "z": "3f61152e.c7f58a",
+    "z": "d80f5f93.c7c3b",
     "name": "",
     "pauseType": "rate",
     "timeout": "5",
     "timeoutUnits": "seconds",
     "rate": "1",
-    "nbRateUnits": "10",
+    "nbRateUnits": "3",
     "rateUnits": "second",
     "randomFirst": "1",
     "randomLast": "5",
     "randomUnits": "seconds",
     "drop": true,
-    "x": 460,
+    "x": 480,
     "y": 160,
     "wires": [
       [
-        "f19aabd1.c8de28"
+        "18bf7d7a.b2ff7b",
+        "cf5621ff.ecb778"
       ]
     ]
   },
   {
-    "id": "9a8f9d7a.e2f15",
+    "id": "5b60c68e.8369b8",
     "type": "inject",
-    "z": "3f61152e.c7f58a",
-    "name": "Message Test",
-    "props": [
-      {
-        "p": "payload"
-      },
-      {
-        "p": "topic",
-        "vt": "str"
-      }
-    ],
-    "repeat": "",
-    "crontab": "",
-    "once": false,
-    "onceDelay": 0.1,
-    "topic": "",
-    "payload": "Mind the gap",
-    "payloadType": "str",
-    "x": 110,
-    "y": 420,
-    "wires": [
-      [
-        "f938c2cc.08d96"
-      ]
-    ]
-  },
-  {
-    "id": "423b10a4.b9554",
-    "type": "inject",
-    "z": "3f61152e.c7f58a",
-    "name": "Color Test",
-    "props": [
-      {
-        "p": "payload"
-      },
-      {
-        "p": "topic",
-        "vt": "str"
-      }
-    ],
-    "repeat": "",
-    "crontab": "",
-    "once": false,
-    "onceDelay": 0.1,
-    "topic": "",
-    "payload": "*,*,blue",
-    "payloadType": "str",
-    "x": 100,
-    "y": 460,
-    "wires": [
-      [
-        "f938c2cc.08d96"
-      ]
-    ]
-  },
-  {
-    "id": "77deef6a.5bca7",
-    "type": "inject",
-    "z": "3f61152e.c7f58a",
+    "z": "d80f5f93.c7c3b",
     "name": "All Off",
     "props": [
       {
         "p": "payload"
       },
       {
-        "p": "topic",
+        "p": "command",
+        "v": "alarm",
         "vt": "str"
       }
     ],
@@ -333,14 +271,99 @@
     "once": false,
     "onceDelay": 0.1,
     "topic": "",
-    "payload": "*,*,off",
-    "payloadType": "str",
+    "payload": "{\"d\":{\"color\":\"off\"}}",
+    "payloadType": "json",
     "x": 90,
-    "y": 500,
+    "y": 560,
     "wires": [
       [
-        "f938c2cc.08d96"
+        "5cc5c0af.8b772"
       ]
+    ]
+  },
+  {
+    "id": "4aaf71c3.58cf4",
+    "type": "comment",
+    "z": "d80f5f93.c7c3b",
+    "name": "sense hat test nodes",
+    "info": "",
+    "x": 110,
+    "y": 440,
+    "wires": []
+  },
+  {
+    "id": "702f9c59.ea9b24",
+    "type": "debug",
+    "z": "d80f5f93.c7c3b",
+    "name": "debug: led",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "true",
+    "targetType": "full",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 710,
+    "y": 520,
+    "wires": []
+  },
+  {
+    "id": "a3a9e37c.ae90f",
+    "type": "inject",
+    "z": "d80f5f93.c7c3b",
+    "name": "Send Message",
+    "props": [
+      {
+        "p": "payload"
+      },
+      {
+        "p": "command",
+        "v": "message",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "{\"d\":{\"color\":\"white\",\"background\":\"blue\",\"message\":\"A\"}}",
+    "payloadType": "json",
+    "x": 120,
+    "y": 480,
+    "wires": [
+      [
+        "5cc5c0af.8b772"
+      ]
+    ]
+  },
+  {
+    "id": "16294e4.d0dd3b2",
+    "type": "inject",
+    "z": "d80f5f93.c7c3b",
+    "name": "Send Alarm",
+    "props": [
+      {
+        "p": "payload"
+      },
+      {
+        "p": "command",
+        "v": "alarm",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "{\"d\":{\"color\":\"red\"}}",
+    "payloadType": "json",
+    "x": 110,
+    "y": 520,
+    "wires": [
+      []
     ]
   },
   {

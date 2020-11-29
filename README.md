@@ -9,9 +9,7 @@ The purpose of this workshop is to get you started working with IBM Cloud, Node-
 
 - First, you will use a tool called [Node-RED](https://nodered.org/) to create an application on the Raspberry Pi that collects sensor information (temperature, humidity, and barometric pressure).
 - Following that, you will register the Raspberry Pi as an device in the IBM Cloud [Internet of Things service](https://cloud.ibm.com/catalog/services/internet-of-things-platform).  
-- Finally, Node-RED application in the IBM CLoud that will store and act on the sensor data it receives from the Raspberry Pi.  
-
-Two sets of instructions are provided for this workshop.  If you have prior experience and would like to try and complete the exercise on your own, follow the [Advanced path](#advanced-path).  Otherwise, if you prefer a more guided approach, choose the [Guided path](#guided-path).
+- Finally, you will create Node-RED application in the IBM Cloud that will store and act on the sensor data it receives from the Raspberry Pi.  
 
 ## Prerequisites
 
@@ -34,7 +32,7 @@ In order to complete this workshop, you will need:
 `bash <(curl -sL https://raw.githubusercontent.com/node-red/linux-installers/master/deb/update-nodejs-and-nodered)`  
 Note: be sure to answer `y` when asked about installing the Pi-specific nodes.
 - Install additional Node-RED nodes for the Sense Hat and the IoT service  
-`npm install node-red-node-pi-sense-hat node-red-contrib-ibm-watson-iot`
+`npm install --prefix ~/.node-red node-red-node-pi-sense-hat node-red-contrib-ibm-watson-iot`
 
 ## Starting Node-RED
 
@@ -42,7 +40,9 @@ Note: When the Node-RED app starts, the last action it performs is to start a lo
 
 [Learn more about Node-RED on a Raspberry Pi here](https://nodered.org/docs/getting-started/raspberrypi)
 
-### Create Raspberry Pi Application
+## Start The Workshop
+
+Two sets of instructions are provided for this workshop.  If you have prior experience and would like to try and complete the exercise on your own, follow the [Advanced path](#advanced-path).  Otherwise, if you prefer a more guided approach, choose the [Guided path](#guided-path).
 
 ---
 
@@ -145,7 +145,6 @@ Note: You can have several nodes connecting to a single connection point on anot
 
 - Create the following Node-RED flow on the Raspberry Pi:
 ![Pi Final Flow](/images/pi-final-flow.png)
-
 - Break the Sense Hat sensor data into three different event types (environment, motion, & joystick).
 - Limit the number of environment and motion events that are sent to the IoT nodes to 1 every 5 seconds.  Otherwise you will quickly overwhelm the data transfer limits imposed by the free IoT Platform service
 - Send the data to the IoT Platform service as one of three event types.
@@ -223,17 +222,17 @@ The **alarm** command should light the entire 8x8 LED matrix on the Sense Hat to
   The alarm topic will need to have the following payload
 
   ``` javascript
-  msg.payload: {d:{color:”desired color or off”}}
+  msg.payload: {"d":{"color":"desired color or off"}}
   ```
 
   The message topic will need to have the following payload
 
   ``` javascript
-  msg.payload: {d:{color:”desired color”,
-                   background:”desired color”,
-                   message:”desired message”}}
+  msg.payload: {"d":{"color":"desired color",
+                     "background":"desired color",
+                     "message":"desired message"}}
   ```
-
+  
 ---
 
 ## Validation and Testing

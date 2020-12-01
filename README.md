@@ -21,6 +21,12 @@ In order to complete this workshop, you will need:
 - Access to the Internet
 - It is assumed that your Raspberry Pi is connected to a network that provides internet access as well as the ability to be accessed remotely via ssh and http.
 
+## Hardware Setup
+
+Bug in Pi 4 with sense hat when running headless requires a small workaround
+- set any video resolution via raspi-config
+- edit /boot/config.txt to uncomment and, therefore, enable `hdmi_force_hotplug=1`
+
 ## Software Setup
 
 - Update the Raspberry Pi OS  

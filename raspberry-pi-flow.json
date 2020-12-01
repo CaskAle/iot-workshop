@@ -1,382 +1,398 @@
 [
-  {
-    "id": "d80f5f93.c7c3b",
-    "type": "tab",
-    "label": "Raspberry Pi Flows",
-    "disabled": false,
-    "info": ""
-  },
-  {
-    "id": "5cc11d0a.1e98e4",
-    "type": "rpi-sensehat in",
-    "z": "d80f5f93.c7c3b",
-    "name": "",
-    "motion": true,
-    "env": true,
-    "stick": true,
-    "x": 90,
-    "y": 160,
-    "wires": [
-      [
-        "a7fda174.e426a"
-      ]
-    ]
-  },
-  {
-    "id": "e7854a3f.274b3",
-    "type": "wiotp out",
-    "z": "d80f5f93.c7c3b",
-    "authType": "g",
-    "qs": "false",
-    "qsDeviceId": "",
-    "deviceKey": "6cc489f3.1281c8",
-    "deviceType": "SenseHat",
-    "deviceId": "TinySense",
-    "event": "environment",
-    "format": "json",
-    "qos": "",
-    "name": "IoT : environment",
-    "x": 730,
-    "y": 100,
-    "wires": []
-  },
-  {
-    "id": "18bf7d7a.b2ff7b",
-    "type": "debug",
-    "z": "d80f5f93.c7c3b",
-    "name": "debug : sensors",
-    "active": false,
-    "tosidebar": true,
-    "console": false,
-    "tostatus": false,
-    "complete": "true",
-    "targetType": "full",
-    "statusVal": "",
-    "statusType": "auto",
-    "x": 720,
-    "y": 280,
-    "wires": []
-  },
-  {
-    "id": "cf5621ff.ecb778",
-    "type": "wiotp out",
-    "z": "d80f5f93.c7c3b",
-    "authType": "g",
-    "qs": "false",
-    "qsDeviceId": "",
-    "deviceKey": "6cc489f3.1281c8",
-    "deviceType": "SenseHat",
-    "deviceId": "TinySense",
-    "event": "motion",
-    "format": "json",
-    "qos": "",
-    "name": "IoT : motion",
-    "x": 710,
-    "y": 160,
-    "wires": []
-  },
-  {
-    "id": "74b08143.132778",
-    "type": "wiotp out",
-    "z": "d80f5f93.c7c3b",
-    "authType": "g",
-    "qs": "false",
-    "qsDeviceId": "",
-    "deviceKey": "6cc489f3.1281c8",
-    "deviceType": "SenseHat",
-    "deviceId": "TinySense",
-    "event": "joystick",
-    "format": "json",
-    "qos": "",
-    "name": "IoT : joystick",
-    "x": 710,
-    "y": 220,
-    "wires": []
-  },
-  {
-    "id": "a7fda174.e426a",
-    "type": "switch",
-    "z": "d80f5f93.c7c3b",
-    "name": "",
-    "property": "topic",
-    "propertyType": "msg",
-    "rules": [
-      {
-        "t": "eq",
-        "v": "environment",
-        "vt": "str"
-      },
-      {
-        "t": "eq",
-        "v": "motion",
-        "vt": "str"
-      },
-      {
-        "t": "eq",
-        "v": "joystick",
-        "vt": "str"
-      }
-    ],
-    "checkall": "true",
-    "repair": false,
-    "outputs": 3,
-    "x": 270,
-    "y": 160,
-    "wires": [
-      [
-        "d694f9e8.66e38"
-      ],
-      [
-        "fdc4fa26.c15198"
-      ],
-      [
-        "74b08143.132778",
-        "18bf7d7a.b2ff7b"
-      ]
-    ]
-  },
-  {
-    "id": "d1833e7e.a0c168",
-    "type": "rpi-sensehat out",
-    "z": "d80f5f93.c7c3b",
-    "name": "",
-    "x": 710,
-    "y": 440,
-    "wires": []
-  },
-  {
-    "id": "5cc5c0af.8b772",
-    "type": "function",
-    "z": "d80f5f93.c7c3b",
-    "name": "format message",
-    "func": "d = msg.payload.d;\nif (msg.command == \"message\") {\n  msg.background=d.background;\n  msg.color=d.color;\n  msg.payload=d.message;\n}\nelse if (msg.command == \"alarm\") {\n  msg.payload=\"*,*,\" + d.color;\n}\nelse\n  msg = null;\nreturn msg;\n",
-    "outputs": 1,
-    "noerr": 0,
-    "initialize": "",
-    "finalize": "",
-    "x": 440,
-    "y": 440,
-    "wires": [
-      [
-        "d1833e7e.a0c168",
-        "702f9c59.ea9b24"
-      ]
-    ]
-  },
-  {
-    "id": "38c9cca1.6ca034",
-    "type": "wiotp in",
-    "z": "d80f5f93.c7c3b",
-    "authType": "g",
-    "deviceKey": "6cc489f3.1281c8",
-    "deviceType": "SenseHat",
-    "deviceId": "TinySense",
-    "command": "+",
-    "commandType": "d",
-    "qos": 0,
-    "name": "IoT : commands",
-    "x": 100,
-    "y": 360,
-    "wires": [
-      [
-        "5cc5c0af.8b772"
-      ]
-    ]
-  },
-  {
-    "id": "d694f9e8.66e38",
-    "type": "delay",
-    "z": "d80f5f93.c7c3b",
-    "name": "",
-    "pauseType": "rate",
-    "timeout": "5",
-    "timeoutUnits": "seconds",
-    "rate": "1",
-    "nbRateUnits": "3",
-    "rateUnits": "second",
-    "randomFirst": "1",
-    "randomLast": "5",
-    "randomUnits": "seconds",
-    "drop": true,
-    "x": 480,
-    "y": 100,
-    "wires": [
-      [
-        "e7854a3f.274b3",
-        "18bf7d7a.b2ff7b"
-      ]
-    ]
-  },
-  {
-    "id": "cd66b321.383bb",
-    "type": "comment",
-    "z": "d80f5f93.c7c3b",
-    "name": "process incoming commands from cloud IoT service",
-    "info": "",
-    "x": 210,
-    "y": 320,
-    "wires": []
-  },
-  {
-    "id": "fc3810b0.a6e2c8",
-    "type": "comment",
-    "z": "d80f5f93.c7c3b",
-    "name": "send sensor data to cloud IoT service",
-    "info": "IoT service",
-    "x": 170,
-    "y": 40,
-    "wires": []
-  },
-  {
-    "id": "fdc4fa26.c15198",
-    "type": "delay",
-    "z": "d80f5f93.c7c3b",
-    "name": "",
-    "pauseType": "rate",
-    "timeout": "5",
-    "timeoutUnits": "seconds",
-    "rate": "1",
-    "nbRateUnits": "3",
-    "rateUnits": "second",
-    "randomFirst": "1",
-    "randomLast": "5",
-    "randomUnits": "seconds",
-    "drop": true,
-    "x": 480,
-    "y": 160,
-    "wires": [
-      [
-        "18bf7d7a.b2ff7b",
-        "cf5621ff.ecb778"
-      ]
-    ]
-  },
-  {
-    "id": "5b60c68e.8369b8",
-    "type": "inject",
-    "z": "d80f5f93.c7c3b",
-    "name": "All Off",
-    "props": [
-      {
-        "p": "payload"
-      },
-      {
-        "p": "command",
-        "v": "alarm",
-        "vt": "str"
-      }
-    ],
-    "repeat": "",
-    "crontab": "",
-    "once": false,
-    "onceDelay": 0.1,
-    "topic": "",
-    "payload": "{\"d\":{\"color\":\"off\"}}",
-    "payloadType": "json",
-    "x": 90,
-    "y": 560,
-    "wires": [
-      [
-        "5cc5c0af.8b772"
-      ]
-    ]
-  },
-  {
-    "id": "4aaf71c3.58cf4",
-    "type": "comment",
-    "z": "d80f5f93.c7c3b",
-    "name": "sense hat test nodes",
-    "info": "",
-    "x": 110,
-    "y": 440,
-    "wires": []
-  },
-  {
-    "id": "702f9c59.ea9b24",
-    "type": "debug",
-    "z": "d80f5f93.c7c3b",
-    "name": "debug: led",
-    "active": true,
-    "tosidebar": true,
-    "console": false,
-    "tostatus": false,
-    "complete": "true",
-    "targetType": "full",
-    "statusVal": "",
-    "statusType": "auto",
-    "x": 710,
-    "y": 520,
-    "wires": []
-  },
-  {
-    "id": "a3a9e37c.ae90f",
-    "type": "inject",
-    "z": "d80f5f93.c7c3b",
-    "name": "Send Message",
-    "props": [
-      {
-        "p": "payload"
-      },
-      {
-        "p": "command",
-        "v": "message",
-        "vt": "str"
-      }
-    ],
-    "repeat": "",
-    "crontab": "",
-    "once": false,
-    "onceDelay": 0.1,
-    "topic": "",
-    "payload": "{\"d\":{\"color\":\"white\",\"background\":\"blue\",\"message\":\"A\"}}",
-    "payloadType": "json",
-    "x": 120,
-    "y": 480,
-    "wires": [
-      [
-        "5cc5c0af.8b772"
-      ]
-    ]
-  },
-  {
-    "id": "16294e4.d0dd3b2",
-    "type": "inject",
-    "z": "d80f5f93.c7c3b",
-    "name": "Send Alarm",
-    "props": [
-      {
-        "p": "payload"
-      },
-      {
-        "p": "command",
-        "v": "alarm",
-        "vt": "str"
-      }
-    ],
-    "repeat": "",
-    "crontab": "",
-    "once": false,
-    "onceDelay": 0.1,
-    "topic": "",
-    "payload": "{\"d\":{\"color\":\"red\"}}",
-    "payloadType": "json",
-    "x": 110,
-    "y": 520,
-    "wires": [
-      []
-    ]
-  },
-  {
-    "id": "6cc489f3.1281c8",
-    "type": "wiotp-credentials",
-    "name": "",
-    "org": "y4njfz",
-    "serverName": "",
-    "devType": "PiGateway",
-    "devId": "TinyRebel-GW",
-    "keepalive": "60",
-    "cleansession": true,
-    "tls": "",
-    "usetls": false
-  }
+    {
+        "id": "d80f5f93.c7c3b",
+        "type": "tab",
+        "label": "Raspberry Pi Flows",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "5cc11d0a.1e98e4",
+        "type": "rpi-sensehat in",
+        "z": "d80f5f93.c7c3b",
+        "name": "",
+        "motion": true,
+        "env": true,
+        "stick": true,
+        "x": 90,
+        "y": 100,
+        "wires": [
+            [
+                "a7fda174.e426a",
+                "18bf7d7a.b2ff7b"
+            ]
+        ]
+    },
+    {
+        "id": "e7854a3f.274b3",
+        "type": "wiotp out",
+        "z": "d80f5f93.c7c3b",
+        "authType": "g",
+        "qs": "false",
+        "qsDeviceId": "",
+        "deviceKey": "27e215f8.1053ba",
+        "deviceType": "senseHat",
+        "deviceId": "mySenseHat",
+        "event": "environment",
+        "format": "json",
+        "qos": "",
+        "name": "IoT : environment",
+        "x": 710,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "18bf7d7a.b2ff7b",
+        "type": "debug",
+        "z": "d80f5f93.c7c3b",
+        "name": "debug : sensors",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 300,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "74b08143.132778",
+        "type": "wiotp out",
+        "z": "d80f5f93.c7c3b",
+        "authType": "g",
+        "qs": "false",
+        "qsDeviceId": "",
+        "deviceKey": "27e215f8.1053ba",
+        "deviceType": "senseHat",
+        "deviceId": "mySenseHat",
+        "event": "joystick",
+        "format": "json",
+        "qos": "",
+        "name": "IoT : joystick",
+        "x": 690,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "a7fda174.e426a",
+        "type": "switch",
+        "z": "d80f5f93.c7c3b",
+        "name": "",
+        "property": "topic",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "environment",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "joystick",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 270,
+        "y": 100,
+        "wires": [
+            [
+                "d694f9e8.66e38"
+            ],
+            [
+                "74b08143.132778"
+            ]
+        ]
+    },
+    {
+        "id": "d1833e7e.a0c168",
+        "type": "rpi-sensehat out",
+        "z": "d80f5f93.c7c3b",
+        "name": "",
+        "x": 690,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "38c9cca1.6ca034",
+        "type": "wiotp in",
+        "z": "d80f5f93.c7c3b",
+        "authType": "g",
+        "deviceKey": "27e215f8.1053ba",
+        "deviceType": "senseHat",
+        "deviceId": "mySenseHat",
+        "command": "message",
+        "commandType": "d",
+        "qos": 0,
+        "name": "IoT : message",
+        "x": 90,
+        "y": 300,
+        "wires": [
+            [
+                "ae63b225.4d914"
+            ]
+        ]
+    },
+    {
+        "id": "d694f9e8.66e38",
+        "type": "delay",
+        "z": "d80f5f93.c7c3b",
+        "name": "",
+        "pauseType": "rate",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "5",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": true,
+        "x": 480,
+        "y": 80,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "cd66b321.383bb",
+        "type": "comment",
+        "z": "d80f5f93.c7c3b",
+        "name": "Process incoming commands from IBM Cloud",
+        "info": "",
+        "x": 190,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "fc3810b0.a6e2c8",
+        "type": "comment",
+        "z": "d80f5f93.c7c3b",
+        "name": "Send sensor data to IBM Cloud",
+        "info": "IoT service",
+        "x": 150,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "5b60c68e.8369b8",
+        "type": "inject",
+        "z": "d80f5f93.c7c3b",
+        "name": "All Off",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "*,*,off",
+        "payloadType": "str",
+        "x": 90,
+        "y": 600,
+        "wires": [
+            [
+                "8a72ae77.bb21f"
+            ]
+        ]
+    },
+    {
+        "id": "4aaf71c3.58cf4",
+        "type": "comment",
+        "z": "d80f5f93.c7c3b",
+        "name": "Test the Sense Hat LED",
+        "info": "",
+        "x": 120,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "a3a9e37c.ae90f",
+        "type": "inject",
+        "z": "d80f5f93.c7c3b",
+        "name": "Send Message",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "color",
+                "v": "white",
+                "vt": "str"
+            },
+            {
+                "p": "background",
+                "v": "navy",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "Cockfosters",
+        "payloadType": "str",
+        "x": 120,
+        "y": 520,
+        "wires": [
+            [
+                "8a72ae77.bb21f"
+            ]
+        ]
+    },
+    {
+        "id": "16294e4.d0dd3b2",
+        "type": "inject",
+        "z": "d80f5f93.c7c3b",
+        "name": "Send Alarm",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "*,*,red",
+        "payloadType": "str",
+        "x": 110,
+        "y": 560,
+        "wires": [
+            [
+                "8a72ae77.bb21f"
+            ]
+        ]
+    },
+    {
+        "id": "edae2e2c.d9069",
+        "type": "template",
+        "z": "d80f5f93.c7c3b",
+        "name": "alarm",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "*,*,{{payload.d.color}}",
+        "output": "str",
+        "x": 270,
+        "y": 360,
+        "wires": [
+            [
+                "d1833e7e.a0c168",
+                "702f9c59.ea9b24"
+            ]
+        ]
+    },
+    {
+        "id": "ae63b225.4d914",
+        "type": "change",
+        "z": "d80f5f93.c7c3b",
+        "name": "message",
+        "rules": [
+            {
+                "t": "set",
+                "p": "color",
+                "pt": "msg",
+                "to": "payload.d.color",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "background",
+                "pt": "msg",
+                "to": "payload.d.background",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.d.message",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 280,
+        "y": 300,
+        "wires": [
+            [
+                "d1833e7e.a0c168",
+                "702f9c59.ea9b24"
+            ]
+        ]
+    },
+    {
+        "id": "8a72ae77.bb21f",
+        "type": "rpi-sensehat out",
+        "z": "d80f5f93.c7c3b",
+        "name": "",
+        "x": 510,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "98eb6b8b.29da08",
+        "type": "wiotp in",
+        "z": "d80f5f93.c7c3b",
+        "authType": "g",
+        "deviceKey": "27e215f8.1053ba",
+        "deviceType": "senseHat",
+        "deviceId": "mySenseHat",
+        "command": "alarm",
+        "commandType": "d",
+        "qos": 0,
+        "name": "IoT : alarm",
+        "x": 80,
+        "y": 360,
+        "wires": [
+            [
+                "edae2e2c.d9069"
+            ]
+        ]
+    },
+    {
+        "id": "702f9c59.ea9b24",
+        "type": "debug",
+        "z": "d80f5f93.c7c3b",
+        "name": "debug: led",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 690,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "27e215f8.1053ba",
+        "type": "wiotp-credentials",
+        "name": "",
+        "org": "dperah",
+        "serverName": "",
+        "devType": "piGateway",
+        "devId": "myPiGateway",
+        "keepalive": "60",
+        "cleansession": true,
+        "tls": "",
+        "usetls": false
+    }
 ]

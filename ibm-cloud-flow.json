@@ -1,295 +1,574 @@
 [
-  {
-    "id": "9fe4f108.b44dd",
-    "type": "tab",
-    "label": "Bluemix IoT Flows"
-  },
-  {
-    "id": "9de5e3b5.5493d",
-    "type": "ibmiot in",
-    "z": "9fe4f108.b44dd",
-    "authentication": "boundService",
-    "apiKey": "",
-    "inputType": "evt",
-    "deviceId": "",
-    "applicationId": "",
-    "deviceType": "",
-    "eventType": "environment",
-    "commandType": "",
-    "format": "json",
-    "name": "IoT : environment",
-    "service": "registered",
-    "allDevices": true,
-    "allApplications": "",
-    "allDeviceTypes": true,
-    "allEvents": false,
-    "allCommands": "",
-    "allFormats": false,
-    "qos": 0,
-    "x": 100,
-    "y": 80,
-    "wires": [
-      [
-        "3d21fa87.be59c6",
-        "b3dc7d3.bc8fc8"
-      ]
-    ]
-  },
-  {
-    "id": "3d21fa87.be59c6",
-    "type": "debug",
-    "z": "9fe4f108.b44dd",
-    "name": "debug : sensor data",
-    "active": false,
-    "console": "false",
-    "complete": "true",
-    "x": 380,
-    "y": 200,
-    "wires": []
-  },
-  {
-    "id": "b3dc7d3.bc8fc8",
-    "type": "function",
-    "z": "9fe4f108.b44dd",
-    "name": "format : environment data for DB",
-    "func": "// Format Sensor Data for dashDB\nmsg.payload = {\n    SENSORID : msg.deviceId,\n    TEMPERATURE : msg.payload.d.temperature,\n    HUMIDITY : msg.payload.d.humidity,\n    PRESSURE : msg.payload.d.pressure,\n    TIMESENT : 'TIMESTAMP'\n};\nreturn msg;",
-    "outputs": 1,
-    "noerr": 0,
-    "x": 420,
-    "y": 80,
-    "wires": [
-      [
-        "7721f59c.d3346c",
-        "485c723a.3d8b7c"
-      ]
-    ]
-  },
-  {
-    "id": "7721f59c.d3346c",
-    "type": "debug",
-    "z": "9fe4f108.b44dd",
-    "name": "debug : dashDB data",
-    "active": true,
-    "console": "false",
-    "complete": "payload",
-    "x": 720,
-    "y": 140,
-    "wires": []
-  },
-  {
-    "id": "485c723a.3d8b7c",
-    "type": "dashDB out",
-    "z": "9fe4f108.b44dd",
-    "dashDB": "",
-    "service": "STSA-CaskAle-dashDB",
-    "table": "SENSEDATA",
-    "name": "dashDB",
-    "x": 680,
-    "y": 80,
-    "wires": []
-  },
-  {
-    "id": "8a0b61b5.d699f",
-    "type": "comment",
-    "z": "9fe4f108.b44dd",
-    "name": "Receive IoT events from Sense Hat",
-    "info": "",
-    "x": 160,
-    "y": 40,
-    "wires": []
-  },
-  {
-    "id": "5ac223fd.04d72c",
-    "type": "ibmiot in",
-    "z": "9fe4f108.b44dd",
-    "authentication": "boundService",
-    "apiKey": "",
-    "inputType": "evt",
-    "deviceId": "",
-    "applicationId": "",
-    "deviceType": "",
-    "eventType": "motion",
-    "commandType": "",
-    "format": "json",
-    "name": "IoT : motion",
-    "service": "registered",
-    "allDevices": true,
-    "allApplications": "",
-    "allDeviceTypes": true,
-    "allEvents": false,
-    "allCommands": "",
-    "allFormats": "",
-    "qos": 0,
-    "x": 90,
-    "y": 140,
-    "wires": [
-      [
-        "3d21fa87.be59c6"
-      ]
-    ]
-  },
-  {
-    "id": "8eeb288d.9705a8",
-    "type": "ibmiot in",
-    "z": "9fe4f108.b44dd",
-    "authentication": "boundService",
-    "apiKey": "",
-    "inputType": "evt",
-    "deviceId": "",
-    "applicationId": "",
-    "deviceType": "+",
-    "eventType": "joystick",
-    "commandType": "",
-    "format": "json",
-    "name": "IoT : joystick",
-    "service": "registered",
-    "allDevices": true,
-    "allApplications": "",
-    "allDeviceTypes": true,
-    "allEvents": "",
-    "allCommands": "",
-    "allFormats": "",
-    "qos": 0,
-    "x": 90,
-    "y": 200,
-    "wires": [
-      [
-        "3d21fa87.be59c6"
-      ]
-    ]
-  },
-  {
-    "id": "ca376b26.84e9a8",
-    "type": "ibmiot out",
-    "z": "9fe4f108.b44dd",
-    "authentication": "boundService",
-    "apiKey": "",
-    "outputType": "cmd",
-    "deviceId": "TinySense",
-    "deviceType": "SenseHat",
-    "eventCommandType": "n/a",
-    "format": "json",
-    "data": "n/a",
-    "qos": 0,
-    "name": "IoT : commands",
-    "service": "registered",
-    "x": 700,
-    "y": 320,
-    "wires": []
-  },
-  {
-    "id": "fc31147f.b858b8",
-    "type": "inject",
-    "z": "9fe4f108.b44dd",
-    "name": "Green",
-    "topic": "alarm",
-    "payload": "green",
-    "payloadType": "str",
-    "repeat": "",
-    "crontab": "",
-    "once": false,
-    "x": 90,
-    "y": 360,
-    "wires": [
-      [
-        "92f44b42.0787c8"
-      ]
-    ]
-  },
-  {
-    "id": "92f44b42.0787c8",
-    "type": "function",
-    "z": "9fe4f108.b44dd",
-    "name": "format : command test",
-    "func": "msg.eventOrCommandType = msg.topic;\nif (msg.topic == \"alarm\") {  \n    msg.payload={d:{color:msg.payload}};\n}\nelse if (msg.topic == \"message\") {  \n    msg.payload={d:{color:\"navy\",\n    background:\"black\",            \n    message:msg.payload}};\n}\nelse  msg = null;\nreturn msg;",
-    "outputs": 1,
-    "noerr": 0,
-    "x": 380,
-    "y": 320,
-    "wires": [
-      [
-        "ca376b26.84e9a8",
-        "5303167e.9bdf88"
-      ]
-    ]
-  },
-  {
-    "id": "a7142fa5.67696",
-    "type": "inject",
-    "z": "9fe4f108.b44dd",
-    "name": "Turn off LED",
-    "topic": "alarm",
-    "payload": "off",
-    "payloadType": "str",
-    "repeat": "",
-    "crontab": "",
-    "once": false,
-    "x": 110,
-    "y": 320,
-    "wires": [
-      [
-        "92f44b42.0787c8"
-      ]
-    ]
-  },
-  {
-    "id": "5303167e.9bdf88",
-    "type": "debug",
-    "z": "9fe4f108.b44dd",
-    "name": "debug : IoT commands",
-    "active": true,
-    "console": "false",
-    "complete": "true",
-    "x": 730,
-    "y": 380,
-    "wires": []
-  },
-  {
-    "id": "78064a84.b322f4",
-    "type": "inject",
-    "z": "9fe4f108.b44dd",
-    "name": "Send Message",
-    "topic": "message",
-    "payload": "Z",
-    "payloadType": "str",
-    "repeat": "",
-    "crontab": "",
-    "once": false,
-    "x": 120,
-    "y": 440,
-    "wires": [
-      [
-        "92f44b42.0787c8"
-      ]
-    ]
-  },
-  {
-    "id": "e429d07c.c11fc",
-    "type": "comment",
-    "z": "9fe4f108.b44dd",
-    "name": "Send IoT commands to Sense Hat LED Matrix",
-    "info": "",
-    "x": 190,
-    "y": 280,
-    "wires": []
-  },
-  {
-    "id": "e54ff772.1db5b8",
-    "type": "inject",
-    "z": "9fe4f108.b44dd",
-    "name": "Red",
-    "topic": "alarm",
-    "payload": "red",
-    "payloadType": "str",
-    "repeat": "",
-    "crontab": "",
-    "once": false,
-    "x": 90,
-    "y": 400,
-    "wires": [
-      [
-        "92f44b42.0787c8"
-      ]
-    ]
-  }
+    {
+        "id": "c9903e5.6c2cfc",
+        "type": "tab",
+        "label": "IBM Cloud Flows",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "9a6609a3.e8b658",
+        "type": "function",
+        "z": "c9903e5.6c2cfc",
+        "name": "format for Db2",
+        "func": "// Format Sensor Data for Db2\nmsg.payload = {\n  SENSORID : msg.deviceId,\n  TEMPERATURE : msg.payload.d.temperature,\n  HUMIDITY : msg.payload.d.humidity,\n  PRESSURE : msg.payload.d.pressure,\n  TIMESENT : 'TIMESTAMP'\n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 360,
+        "y": 80,
+        "wires": [
+            [
+                "d7226f9f.e753d",
+                "d1fd7b66.9e5898"
+            ]
+        ]
+    },
+    {
+        "id": "d1fd7b66.9e5898",
+        "type": "debug",
+        "z": "c9903e5.6c2cfc",
+        "name": "debug : Db2",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 710,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "dd0004e9.4f7268",
+        "type": "comment",
+        "z": "c9903e5.6c2cfc",
+        "name": "Store environment data in Db2",
+        "info": "",
+        "x": 140,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "ccaa5e3f.75a9a",
+        "type": "inject",
+        "z": "c9903e5.6c2cfc",
+        "name": "Green",
+        "props": [
+            {
+                "p": "payload.d.color",
+                "v": "green",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "",
+        "topic": "",
+        "payloadType": "str",
+        "x": 90,
+        "y": 520,
+        "wires": [
+            [
+                "cd170102.1dafe",
+                "c5b30ec0.8e44a"
+            ]
+        ]
+    },
+    {
+        "id": "f70bd6d2.6a61d8",
+        "type": "inject",
+        "z": "c9903e5.6c2cfc",
+        "name": "All Off",
+        "props": [
+            {
+                "p": "payload.d.color",
+                "v": "off",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "",
+        "topic": "",
+        "payloadType": "str",
+        "x": 90,
+        "y": 480,
+        "wires": [
+            [
+                "c5b30ec0.8e44a",
+                "cd170102.1dafe"
+            ]
+        ]
+    },
+    {
+        "id": "c5b30ec0.8e44a",
+        "type": "debug",
+        "z": "c9903e5.6c2cfc",
+        "name": "debug : IoT",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 710,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "fda6ba0.8394048",
+        "type": "comment",
+        "z": "c9903e5.6c2cfc",
+        "name": "Send alarms to Sense Hat LED matrix",
+        "info": "",
+        "x": 170,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "274ce65b.45283a",
+        "type": "inject",
+        "z": "c9903e5.6c2cfc",
+        "name": "Red",
+        "props": [
+            {
+                "p": "payload.d.color",
+                "v": "red",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "",
+        "topic": "",
+        "payloadType": "str",
+        "x": 90,
+        "y": 560,
+        "wires": [
+            [
+                "cd170102.1dafe",
+                "c5b30ec0.8e44a"
+            ]
+        ]
+    },
+    {
+        "id": "10cf911.0a38e6f",
+        "type": "ibmiot out",
+        "z": "c9903e5.6c2cfc",
+        "authentication": "boundService",
+        "apiKey": "",
+        "outputType": "cmd",
+        "deviceId": "mySenseHat",
+        "deviceType": "senseHat",
+        "eventCommandType": "message",
+        "format": "json",
+        "data": "n/a",
+        "qos": 0,
+        "name": "IoT : message",
+        "service": "registered",
+        "x": 720,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "b304caf1.8e6f08",
+        "type": "ibmiot in",
+        "z": "c9903e5.6c2cfc",
+        "authentication": "boundService",
+        "apiKey": "",
+        "inputType": "evt",
+        "logicalInterface": "",
+        "ruleId": "",
+        "deviceId": "",
+        "applicationId": "",
+        "deviceType": "",
+        "eventType": "environment",
+        "commandType": "",
+        "format": "json",
+        "name": "IoT : environment",
+        "service": "registered",
+        "allDevices": true,
+        "allApplications": "",
+        "allDeviceTypes": true,
+        "allLogicalInterfaces": false,
+        "allEvents": false,
+        "allCommands": "",
+        "allFormats": false,
+        "qos": 0,
+        "x": 100,
+        "y": 80,
+        "wires": [
+            [
+                "9a6609a3.e8b658"
+            ]
+        ]
+    },
+    {
+        "id": "d207e4a8.40a968",
+        "type": "ibmiot in",
+        "z": "c9903e5.6c2cfc",
+        "authentication": "boundService",
+        "apiKey": "",
+        "inputType": "evt",
+        "deviceId": "",
+        "applicationId": "",
+        "deviceType": "+",
+        "eventType": "joystick",
+        "commandType": "",
+        "format": "json",
+        "name": "IoT : joystick",
+        "service": "registered",
+        "allDevices": true,
+        "allApplications": "",
+        "allDeviceTypes": true,
+        "allEvents": "",
+        "allCommands": "",
+        "allFormats": "",
+        "qos": 0,
+        "x": 90,
+        "y": 280,
+        "wires": [
+            [
+                "34b2ff5f.7cd38"
+            ]
+        ]
+    },
+    {
+        "id": "d7226f9f.e753d",
+        "type": "Db2 out",
+        "z": "c9903e5.6c2cfc",
+        "Db2": "",
+        "service": "db2-dallas-39538",
+        "table": "Db2: SENSEDATA",
+        "name": "",
+        "x": 730,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "ee646bcf.5de0b8",
+        "type": "comment",
+        "z": "c9903e5.6c2cfc",
+        "name": "Take action on joystick events",
+        "info": "",
+        "x": 140,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "34b2ff5f.7cd38",
+        "type": "switch",
+        "z": "c9903e5.6c2cfc",
+        "name": "Switch",
+        "property": "payload.d.key",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "LEFT",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "RIGHT",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "UP",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "DOWN",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "ENTER",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 5,
+        "x": 330,
+        "y": 280,
+        "wires": [
+            [
+                "d49b14be.ef14a8"
+            ],
+            [
+                "976af8ff.7b4438"
+            ],
+            [
+                "b427a805.52afc8"
+            ],
+            [
+                "3fdd2e88.d3ded2"
+            ],
+            [
+                "f1087014.c3282"
+            ]
+        ]
+    },
+    {
+        "id": "976af8ff.7b4438",
+        "type": "change",
+        "z": "c9903e5.6c2cfc",
+        "name": "right",
+        "rules": [
+            {
+                "t": "delete",
+                "p": "payload",
+                "pt": "msg"
+            },
+            {
+                "t": "set",
+                "p": "payload.d.message",
+                "pt": "msg",
+                "to": "R",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "payload.d.color",
+                "pt": "msg",
+                "to": "purple",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "payload.d.background",
+                "pt": "msg",
+                "to": "black",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 510,
+        "y": 240,
+        "wires": [
+            [
+                "10cf911.0a38e6f"
+            ]
+        ]
+    },
+    {
+        "id": "f1087014.c3282",
+        "type": "change",
+        "z": "c9903e5.6c2cfc",
+        "name": "center",
+        "rules": [
+            {
+                "t": "delete",
+                "p": "payload",
+                "pt": "msg"
+            },
+            {
+                "t": "set",
+                "p": "payload.d.message",
+                "pt": "msg",
+                "to": "",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "payload.d.color",
+                "pt": "msg",
+                "to": "black",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "payload.d.background",
+                "pt": "msg",
+                "to": "black",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 510,
+        "y": 360,
+        "wires": [
+            [
+                "10cf911.0a38e6f",
+                "c5b30ec0.8e44a"
+            ]
+        ]
+    },
+    {
+        "id": "3fdd2e88.d3ded2",
+        "type": "change",
+        "z": "c9903e5.6c2cfc",
+        "name": "down",
+        "rules": [
+            {
+                "t": "delete",
+                "p": "payload",
+                "pt": "msg"
+            },
+            {
+                "t": "set",
+                "p": "payload.d.message",
+                "pt": "msg",
+                "to": "D",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "payload.d.color",
+                "pt": "msg",
+                "to": "green",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "payload.d.background",
+                "pt": "msg",
+                "to": "black",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 510,
+        "y": 320,
+        "wires": [
+            [
+                "10cf911.0a38e6f"
+            ]
+        ]
+    },
+    {
+        "id": "b427a805.52afc8",
+        "type": "change",
+        "z": "c9903e5.6c2cfc",
+        "name": "up",
+        "rules": [
+            {
+                "t": "delete",
+                "p": "payload",
+                "pt": "msg"
+            },
+            {
+                "t": "set",
+                "p": "payload.d.message",
+                "pt": "msg",
+                "to": "U",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "payload.d.color",
+                "pt": "msg",
+                "to": "navy",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "payload.d.background",
+                "pt": "msg",
+                "to": "black",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 510,
+        "y": 280,
+        "wires": [
+            [
+                "10cf911.0a38e6f"
+            ]
+        ]
+    },
+    {
+        "id": "d49b14be.ef14a8",
+        "type": "change",
+        "z": "c9903e5.6c2cfc",
+        "name": "left",
+        "rules": [
+            {
+                "t": "delete",
+                "p": "payload",
+                "pt": "msg"
+            },
+            {
+                "t": "set",
+                "p": "payload.d.message",
+                "pt": "msg",
+                "to": "L",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "payload.d.color",
+                "pt": "msg",
+                "to": "orange",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "payload.d.background",
+                "pt": "msg",
+                "to": "black",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 510,
+        "y": 200,
+        "wires": [
+            [
+                "10cf911.0a38e6f"
+            ]
+        ]
+    },
+    {
+        "id": "cd170102.1dafe",
+        "type": "ibmiot out",
+        "z": "c9903e5.6c2cfc",
+        "authentication": "boundService",
+        "apiKey": "",
+        "outputType": "cmd",
+        "deviceId": "mySenseHat",
+        "deviceType": "senseHat",
+        "eventCommandType": "alarm",
+        "format": "json",
+        "data": "n/a",
+        "qos": 0,
+        "name": "IoT : alarm",
+        "service": "registered",
+        "x": 710,
+        "y": 520,
+        "wires": []
+    }
 ]

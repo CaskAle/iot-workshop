@@ -160,12 +160,66 @@ Note: You can have several nodes connecting to a single connection point on anot
 
 - Create a new Node-RED application from the Node-RED template.
 - Connect your IoT Platform and Db2 services to your new application
-- Create the following Node-RED flow in the IBM Cloud Node-RED application:
-![Cloud Final Flow](/images/cloud-final-flow.png)
+- Create the following Node-RED flow in your IBM Cloud Node-RED application:  
+![Cloud Final Flow](/images/cloud-final-flow.png)  
+
+  **Note:** You will need to use the Node-RED Palette Manager to install the **node-red-contrib-scx-ibmiotapp** set of IoT input and output nodes.
+
+- Use *ibmiot in* nodes to receive the incoming *environment* and *joystick* events
+- Format the incoming environment data into the appropriate format that the Db2 node expects  
+
+  The incoming *environment* event will have the following payload structure:
+
+  ``` javascript
+  msg.payload = {"d":{"temperature": "35.21",
+                     "humidity": "38.31",
+                     "pressure": "994.84"}}
+  ```
+
+  The Db2 node will need the following payload structure based upon the table created earlier
+
+  ``` javascript
+  msg.payload = {SENSORID : deviceId,
+                 TEMPERATURE : temperature,
+                 HUMIDITY : humidity,
+                 PRESSURE : pressure,
+                 TIMESENT : 'TIMESTAMP'}
+  ```
+
+- Take action on the incoming *joystick* events and send a *message* command to the Sense HAT LED.  The message should be different for each direction of the joystick.  
+
+  The *ibmiot out* node for joystick events should use the *message* command type and the payload will need to have the following structure:
+
+  ``` javascript
+  command:    "message"
+  format:     "json"
+  deviceType: "SenseHat"
+  deviceId:   "mySenseHat"
+  payload:    {"d":{"color":"color",
+                    "background":"color",
+                    "message":"some text"}}
+  ```
+
+- Send some test *alarm* commands to the Sense HAT LED.  The *inject* nodes should generate a payload in the format expected by the Raspberry Pi based upon the following table:
+
+  | Name    | Color |
+  | ---     | ---   |
+  | LED Off | off   |
+  | Green   | green |
+  | Red     | red   |
+
+  The *ibmiot out* node for alarms should use the *alarm* command type and the payload will need to have the following structure:
+  
+  ``` javascript
+  command:    "alarm"
+  format:     "json"
+  deviceType: "SenseHat"
+  deviceId:   "mySenseHat"
+  payload:    {"d":{"color":"color"}}
 
 ### Create Raspberry Pi Node-RED Flows
 
-- Create the following Node-RED flow on the Raspberry Pi:
+- Create the following Node-RED flow on the Raspberry Pi:  
 ![Pi Final Flow](/images/pi-final-flow.png)
 - Break the Sense HAT sensor data into three different event types (environment, motion, & joystick).
 - Limit the number of environment and motion events that are sent to the IoT nodes to 1 every 5 seconds.  Otherwise you will quickly overwhelm the data transfer limits imposed by the free IoT Platform service
@@ -207,52 +261,6 @@ The **alarm** command should light the entire 8x8 LED matrix on the Sense HAT to
   msg.payload = "message to display"
   ```
 
-### Create IBM Cloud Node-RED Flows
-
-- Create the following Node-RED flow in your IBM Cloud Node-RED application
-![Cloud Final Flow](/images/cloud-final-flow.png)
-- Receive the three different event types (environment, motion, & joystick)
-- Format the incoming environment data into the appropriate format for the Db2 node
-- The incoming environment event will have the following payload structure:
-
-  ``` javascript
-  msg.payload: {d:{temperature: 35.21
-                   humidity: 38.31
-                   pressure: 994.84}}
-  ```
-
-- The Db2 node will need the following payload structure based upon the table created earlier
-
-  ``` javascript
-  msg.payload: {SENSORID : deviceId,
-                TEMPERATURE : temperature,
-                HUMIDITY : humidity,
-                PRESSURE : pressure,
-                TIMESENT : 'TIMESTAMP'}
-  ```
-
-- Send alarm IoT commands to the Sense HAT device.  The inject nodes should send a string payload with a topic that identifies the specific command being sent as follows:
-
-  | Type   | Payload     | Topic   | Name         |
-  | ---    | ---         | ---     | ---          |
-  | string | off         | alarm   | Turn off LED |
-  | string | green       | alarm   | Green        |
-  | string | red         | alarm   | Red          |
-
-- Set the command type to alarm in the outbound IoT node.  Format the injected data into the expected format for the Raspberry Pi based upon the following payload structure:
-
-  ``` javascript
-  msg.payload: {"d":{"color":"desired color or off"}}
-  ```
-
-  The message topic will need to have the following payload structure:
-
-  ``` javascript
-  msg.payload: {"d":{"color":"desired color",
-                     "background":"desired color",
-                     "message":"desired message"}}
-  ```
-  
 ---
 
 ## Validation and Testing

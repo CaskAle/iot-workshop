@@ -122,8 +122,8 @@ Note: You can have several nodes connecting to a single connection point on anot
 ### Create an Internet of Things Platform service and define the Raspberry Pi device
 
 - Create an Internet of Things Platform service in your IBM Cloud space
-- In your newly created IoT Platform service, define a new gateway device type called **PiGateway**
-- Add a new gateway device called **myPiGateway** using the newly defined PiGateway device type
+- In your newly created IoT Platform service, define a new gateway device type called **piGateway**
+- Add a new gateway device called **myPiGateway** using the newly defined piGateway device type
 
   **Note:** The workshop treats the Raspberry Pi as an edge gateway and the attached Sense Hat as a downstream sensor device.  It is not necessary to define the Sense Hat device to the IoT Platform service as the gateway device will do it automatically when the Sense Hat connects through it.
 
@@ -144,7 +144,7 @@ Note: You can have several nodes connecting to a single connection point on anot
 
 ### Create a Node-RED Application in your IBM Cloud space
 
-- Create a new Node-RED application from the Node-RED boilerplate.  Instructions in these workshops assume that the name of the application is myWorkshop-xxx (replace xxx with your initials to help ensure a unique name)
+- Create a new Node-RED application from the Node-RED boilerplate.
 - Connect your IoT and Db2 Warehouse services to your new application
 
 ### Create Raspberry Pi Node-RED Flows
@@ -155,17 +155,17 @@ Note: You can have several nodes connecting to a single connection point on anot
 - Limit the number of environment and motion events that are sent to the IoT nodes to 1 every 5 seconds.  Otherwise you will quickly overwhelm the data transfer limits imposed by the free IoT Platform service
 - Send the data to the IoT Platform service as one of three event types.
 - Receive incoming IoT commands called **alarm** and **message**  
-The **alarm** command should light the entire 8x8 LED matrix on the Sense Hat to a solid color provided in the incoming IoT command.  The incoming alarm command will have the following payload:
+The **alarm** command should light the entire 8x8 LED matrix on the Sense Hat to a solid color provided in the incoming IoT command.  The incoming alarm command will have the following payload structure:
 
   ``` javascript
   msg.command:    "alarm"
   msg.format:     "json"
   msg.deviceType: "SenseHat"
   msg.deviceId:   "mySenseHat"
-  msg.payload:    {d:{color:msg.payload}}
+  msg.payload:    {d:{color:"blue"}}
   ```
 
-  The **message** command should scroll a message across the LED matrix.  The message, the text color, and the background color are all provided in the incoming IoT command.  The incoming message command will have the following payload:
+  The **message** command should scroll a message across the LED matrix.  The message, the text color, and the background color are all provided in the incoming IoT command.  The incoming message command will have the following payload structure:
 
   ``` javascript
   msg.command:    "message"
@@ -174,13 +174,13 @@ The **alarm** command should light the entire 8x8 LED matrix on the Sense Hat to
   msg.deviceId:   "mySenseHat"
   msg.payload:    {d:{color:"blue",
                       background:"green",
-                      message:”message text”}}
+                      message:"message text"}}
   ```
 
 - In order to set the entire 8x8 Sense Hat LED matrix to a specific color, you need to have the following string in the msg.payload *(replace color with a color choice like red, blue, green, etc)*
 
   ``` javascript
-    msg.payload = "*, *, "color"
+    msg.payload = "*, *, color"
   ```
 
 - To have a message scroll across the LED matrix, the msg format is a bit more detailed *(again, replace color with a color choice like red, blue, green, etc)*
@@ -197,7 +197,7 @@ The **alarm** command should light the entire 8x8 LED matrix on the Sense Hat to
 ![Cloud Final Flow](/images/cloud-final-flow.png)
 - Receive the three different event types (environment, motion, & joystick)
 - Format the incoming environment data into the appropriate format for the Db2 node
-- The incoming environment event will have the following payload:
+- The incoming environment event will have the following payload structure:
 
   ``` javascript
   msg.payload: {d:{temperature: 35.21
@@ -205,7 +205,7 @@ The **alarm** command should light the entire 8x8 LED matrix on the Sense Hat to
                    pressure: 994.84}}
   ```
 
-- The Db2 node will need the following payload based upon the table created earlier
+- The Db2 node will need the following payload structure based upon the table created earlier
 
   ``` javascript
   msg.payload: {SENSORID : deviceId,
@@ -215,23 +215,21 @@ The **alarm** command should light the entire 8x8 LED matrix on the Sense Hat to
                 TIMESENT : 'TIMESTAMP'}
   ```
 
-- Send test IoT commands called alarm and message to the Sense Hat device on the Raspberry Pi.  The inject nodes should send a string payload with a topic that identifies the specific command being sent as follows:
+- Send alarm IoT commands to the Sense Hat device.  The inject nodes should send a string payload with a topic that identifies the specific command being sent as follows:
 
   | Type   | Payload     | Topic   | Name         |
   | ---    | ---         | ---     | ---          |
   | string | off         | alarm   | Turn off LED |
   | string | green       | alarm   | Green        |
   | string | red         | alarm   | Red          |
-  | string | "any text"  | message | Send Message |
 
-- Set the outbound msg.eventOrCommandType to either alarm or message based upon the incoming topic type.  Format the injected data into the appropriate format for the Raspberry Pi application based upon the incoming topic type:  
-  The alarm topic will need to have the following payload
+- Set the command type to alarm in the outbound IoT node.  Format the injected data into the expected format for the Raspberry Pi based upon the following payload structure:
 
   ``` javascript
   msg.payload: {"d":{"color":"desired color or off"}}
   ```
 
-  The message topic will need to have the following payload
+  The message topic will need to have the following payload structure
 
   ``` javascript
   msg.payload: {"d":{"color":"desired color",

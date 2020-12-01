@@ -116,12 +116,12 @@ Note: You can have several nodes connecting to a single connection point on anot
     22. Finally, it is time to send these messages to your IoT Platform service so that they can be accessed from your IBM Cloud application.  For this, you will need to pull three Internet of Things output nodes into your workspace and position them to the right of your delay nodes.
     23. Each IoT node will send a separate event type to the IoT Platform service.  You will need to configure them by opening settings and configuring as follows:
 
-    • Because we defined the Raspberry Pi as a Gateway device, you need to connect as a Gateway.
+• Because we defined the Raspberry Pi as a Gateway device, you need to connect as a Gateway.
     • When configuring the first of these nodes, you will need to Add new wiotp-credentials.  You do this by clicking on the  in the credentials line.  Here you will specify the gateway device that you defined earlier.  Use the values that you recorded during the IoT device definition to fill in the appropriate fields.  Do not modify any other fields in this section.
     • The device type and Device ID can be any value that helps to identify their purpose.  We will use the values provided in the image.
     • The value entered into Event type will define the actual event that this message comprises.  Use one of the three values in each node.
 
-    24. Connect the three IoT nodes to their respective delay or switch nodes.
+   24. Connect the three IoT nodes to their respective delay or switch nodes.
     25. Once again, deploy the application.  If everything has gone well, you will see a green dot below the IoT nodes that indicates they are now connected to the IoT Platform service.
     26. This concludes flow 1.
 
@@ -133,13 +133,13 @@ Note: You can have several nodes connecting to a single connection point on anot
 
 ## Advanced Path
 
-### Create an Internet of Things Platform service and define the Raspberry Pi device
+### Create an Internet of Things Platform service and define the Raspberry Pi Gateway device
 
 - Create an Internet of Things Platform service in your IBM Cloud space
-- In your newly created IoT Platform service, define a new gateway device type called **piGateway**
+- In your newly created IoT Platform service, define a new **Gateway** device type called **piGateway**
 - Add a new gateway device called **myPiGateway** using the newly defined piGateway device type
 
-  **Note:** The workshop treats the Raspberry Pi as an edge gateway and the attached Sense HAT as a downstream sensor device.  It is not necessary to define the Sense HAT device to the IoT Platform service as the gateway device will do it automatically when the Sense HAT connects through it.
+**Note:** This workshop treats the Raspberry Pi as an edge gateway and the attached Sense HAT as a downstream sensor device.  It is not necessary to define the Sense HAT device to the IoT Platform service as the gateway device will do it automatically when the Sense HAT connects through it.
 
 ### Create a DB2 database service and a table to store sensor data
 
@@ -158,8 +158,10 @@ Note: You can have several nodes connecting to a single connection point on anot
 
 ### Create a Node-RED Application in your IBM Cloud space
 
-- Create a new Node-RED application from the Node-RED boilerplate.
-- Connect your IoT and Db2 Warehouse services to your new application
+- Create a new Node-RED application from the Node-RED template.
+- Connect your IoT Platform and Db2 services to your new application
+- Create the following Node-RED flow in the IBM Cloud Node-RED application:
+![Cloud Final Flow](/images/cloud-final-flow.png)
 
 ### Create Raspberry Pi Node-RED Flows
 

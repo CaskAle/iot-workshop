@@ -6,7 +6,18 @@ The Internet of Things (IoT) links physical things, such as weather sensors and 
 
 - First, you will create an instance of the [Internet of Things platform](https://cloud.ibm.com/catalog/services/internet-of-things-platform) in your IBM Cloud account and you will register the Raspberry Pi as a gateway device to your new IoT service.
 - Following that, you will use Node-RED to create an application on the Raspberry Pi that collects sensor information (temperature, humidity, barometric pressure, and joystick movement) from the attached Sense HAT and sends it to the IoT Platform.
-- Finally, you will create a second Node-RED application in your IBM Cloud account that will collect, store, and act on the sensor data it receives from the Raspberry Pi.  
+- Finally, you will create a second Node-RED application in your IBM Cloud account that will collect, store, and act on the sensor data it receives from the Raspberry Pi.
+
+## Contents
+- [Prerequisites](#prerequisites)
+- [Hardware Setup](#hardware-setup)
+- [Software Setup](#software-setup)
+- [Starting Node-RED](#starting-node-red)
+- [Start the Workshop](#start-the-workshop)
+- [Guided Path](#guided-path)
+- [Advanced Path](#advanced-path)
+- [Validation and Testing](#validation-and-testing)
+
 
 ## Prerequisites
 

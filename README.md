@@ -146,16 +146,16 @@ Note: You can have several nodes connecting to a single connection point on anot
 
 ### Create an Internet of Things Platform service and define the Raspberry Pi Gateway device
 
-- Create an Internet of Things Platform service in your IBM Cloud space
-- In your newly created IoT Platform service, define a new **Gateway** device type called **piGateway**
-- Add a new gateway device called **myPiGateway** using the newly defined piGateway device type
+- Create an Internet of Things Platform service in your IBM Cloud space.
+- In your newly created IoT Platform service, define a new **Gateway** device type called **piGateway**.
+- Add a new gateway device called **myPiGateway** using the newly defined piGateway device type.
 
 **Note:** This workshop treats the Raspberry Pi as an edge gateway and the attached Sense HAT as a downstream sensor device.  It is not necessary to define the Sense HAT device to the IoT Platform service as the gateway device will do it automatically when the Sense HAT connects through it.
 
 ### Create a DB2 database service and a table to store sensor data
 
-- Create a Db2 database service in your IBM Cloud space
-- Create a database table called **SENSEDATA** containing the following columns and data types
+- Create a Db2 database service in your IBM Cloud space.
+- Create a database table called **SENSEDATA** containing the following columns and data types:
 
   | **Column Name** | **Data Type** | **Length** |
   | ---             | ---           | ---        |
@@ -169,35 +169,44 @@ Note: You can have several nodes connecting to a single connection point on anot
 
 ### Create a Node-RED Application in your IBM Cloud space
 
-- Create a new Node-RED application from the Node-RED template in the catalog
-- Connect your IoT Platform and Db2 services to your new application
-- Create the following Node-RED flow in your IBM Cloud Node-RED application  
+- Create a new Node-RED application from the Node-RED template in the catalog.
+- Connect your IoT Platform and Db2 services to your new application.
+- Create the following Node-RED flow in your IBM Cloud Node-RED application:  
 ![Cloud Final Flow](/images/cloud-final-flow.png)  
 
   **Note:** You will need to use the Node-RED Palette Manager to install the **node-red-contrib-scx-ibmiotapp** set of IoT input and output nodes.
 
-- Use *ibmiot in* nodes to receive the incoming *environment* and *joystick* events
-- Format the incoming environment data into the appropriate format that the Db2 node expects  
+- Use *ibmiot in* nodes to receive the incoming *environment* and *joystick* events.
+- Format the incoming environment data into the appropriate format that the Db2 node expects.  
 
   The incoming *environment* event will have the following payload structure:
 
   ``` javascript
-  msg.payload = {"d":{"temperature": "35.21",
-                     "humidity": "38.31",
-                     "pressure": "994.84"}}
+  msg.deviceId = "deviceID"
+  msg.payload = {"d": {"temperature": 35.21,
+                       "humidity": 38.31,
+                       "pressure": 994.84}}
   ```
 
-  The Db2 node will need the following payload structure based upon the table created earlier
+  The Db2 node will need the following payload structure based upon the SENSEDATA table and the incoming event payload.
 
   ``` javascript
-  msg.payload = {SENSORID : deviceId,
-                 TEMPERATURE : temperature,
-                 HUMIDITY : humidity,
-                 PRESSURE : pressure,
-                 TIMESENT : 'TIMESTAMP'}
+  msg.payload = {SENSORID: msg.deviceId,
+                 TEMPERATURE: msg.payload.d.temperature,
+                 HUMIDITY: msg.payload.d.humidity,
+                 PRESSURE: msg.payload.d.pressure,
+                 TIMESENT: 'TIMESTAMP'}
   ```
 
 - Take action on the incoming *joystick* events and send a *message* command to the Sense HAT LED.  The message should be different for each direction of the joystick.  
+
+  The incoming *joystick* event will have the following payload structure:
+
+  ``` javascript
+  msg.deviceId = "deviceID"
+  msg.payload = {"d": {"key": "LEFT",
+                       "state": 1}}
+  ```
 
   The *ibmiot out* node for joystick events should use the *message* command type and the payload will need to have the following structure:
 
@@ -206,9 +215,9 @@ Note: You can have several nodes connecting to a single connection point on anot
   format:     "json"
   deviceType: "SenseHat"
   deviceId:   "mySenseHat"
-  payload:    {"d":{"color":"color",
-                    "background":"color",
-                    "message":"some text"}}
+  payload:    {"d": {"color": "white",
+                     "background": "blue",
+                     "message": "message text"}}
   ```
 
 - Send some test *alarm* commands to the Sense HAT LED.  The *inject* nodes should generate a payload in the format expected by the Raspberry Pi based upon the following table:
@@ -226,7 +235,7 @@ Note: You can have several nodes connecting to a single connection point on anot
   format:     "json"
   deviceType: "SenseHat"
   deviceId:   "mySenseHat"
-  payload:    {"d":{"color":"color"}}
+  payload:    {"d": {"color": "red"}}
 
 ### Create Raspberry Pi Node-RED Flows
 
@@ -243,7 +252,7 @@ The *alarm* command should light the entire 8x8 LED matrix on the Sense HAT to a
   msg.format:     "json"
   msg.deviceType: "SenseHat"
   msg.deviceId:   "mySenseHat"
-  msg.payload:    {"d":{"color":"color"}}
+  msg.payload:    {"d": {"color": "red"}}
   ```
 
   The *message* command should scroll a message across the LED matrix.  The message, the text color, and the background color are all provided in the incoming IoT command.  The incoming message command will have the following payload structure:
@@ -253,23 +262,23 @@ The *alarm* command should light the entire 8x8 LED matrix on the Sense HAT to a
   msg.format:     "json"
   msg.deviceType: "SenseHat"
   msg.deviceId:   "mySenseHat"
-  msg.payload:    {"d":{"color":"color",
-                        "background":"color",
-                        "message":"message text"}}
+  msg.payload:    {"d": {"color": "white",
+                         "background": "blue",
+                         "message": "message text"}}
   ```
 
 - In order to set the entire 8x8 Sense HAT LED matrix to a specific color, you need to have the following string in the msg.payload *(replace color with a color choice like red, blue, green, etc)*
 
   ``` javascript
-    msg.payload = "*, *, color"
+    msg.payload = "*, *, red"
   ```
 
 - To have a message scroll across the LED matrix, the msg format is a bit more detailed *(again, replace color with a color choice like red, blue, green, etc)*
 
   ``` javascript
-  msg.color = "color"
-  msg.background = "color"
-  msg.payload = "message to display"
+  msg.color = "white"
+  msg.background = "blue"
+  msg.payload = "message text"
   ```
 
 ---

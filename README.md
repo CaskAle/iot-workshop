@@ -158,9 +158,9 @@ Note: You can have several nodes connecting to a single connection point on anot
 
 ### Create a Node-RED Application in your IBM Cloud space
 
-- Create a new Node-RED application from the Node-RED template.
+- Create a new Node-RED application from the Node-RED template in the catalog
 - Connect your IoT Platform and Db2 services to your new application
-- Create the following Node-RED flow in your IBM Cloud Node-RED application:  
+- Create the following Node-RED flow in your IBM Cloud Node-RED application  
 ![Cloud Final Flow](/images/cloud-final-flow.png)  
 
   **Note:** You will need to use the Node-RED Palette Manager to install the **node-red-contrib-scx-ibmiotapp** set of IoT input and output nodes.
@@ -219,32 +219,32 @@ Note: You can have several nodes connecting to a single connection point on anot
 
 ### Create Raspberry Pi Node-RED Flows
 
-- Create the following Node-RED flow on the Raspberry Pi:  
+- Create the following Node-RED flow on the Raspberry Pi  
 ![Pi Final Flow](/images/pi-final-flow.png)
-- Break the Sense HAT sensor data into three different event types (environment, motion, & joystick).
-- Limit the number of environment and motion events that are sent to the IoT nodes to 1 every 5 seconds.  Otherwise you will quickly overwhelm the data transfer limits imposed by the free IoT Platform service
-- Send the data to the IoT Platform service as one of three event types.
-- Receive incoming IoT commands called **alarm** and **message**  
-The **alarm** command should light the entire 8x8 LED matrix on the Sense HAT to a solid color provided in the incoming IoT command.  The incoming alarm command will have the following payload structure:
+- Break the Sense HAT sensor data into two different event types (environment & joystick).
+- Limit the number of environment events that are sent to the IoT nodes to 1 every 5 seconds.  Otherwise you will quickly overwhelm the data transfer limits imposed by the free IoT Platform service
+- Send the data to the IoT Platform service as one of two event types.
+- Receive incoming IoT commands called *alarm* and *message*  
+The *alarm* command should light the entire 8x8 LED matrix on the Sense HAT to a solid color provided in the incoming IoT command.  The incoming alarm command will have the following payload structure:
 
   ``` javascript
   msg.command:    "alarm"
   msg.format:     "json"
   msg.deviceType: "SenseHat"
   msg.deviceId:   "mySenseHat"
-  msg.payload:    {d:{color:"blue"}}
+  msg.payload:    {"d":{"color":"color"}}
   ```
 
-  The **message** command should scroll a message across the LED matrix.  The message, the text color, and the background color are all provided in the incoming IoT command.  The incoming message command will have the following payload structure:
+  The *message* command should scroll a message across the LED matrix.  The message, the text color, and the background color are all provided in the incoming IoT command.  The incoming message command will have the following payload structure:
 
   ``` javascript
   msg.command:    "message"
   msg.format:     "json"
   msg.deviceType: "SenseHat"
   msg.deviceId:   "mySenseHat"
-  msg.payload:    {d:{color:"blue",
-                      background:"green",
-                      message:"message text"}}
+  msg.payload:    {"d":{"color":"color",
+                        "background":"color",
+                        "message":"message text"}}
   ```
 
 - In order to set the entire 8x8 Sense HAT LED matrix to a specific color, you need to have the following string in the msg.payload *(replace color with a color choice like red, blue, green, etc)*

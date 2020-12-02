@@ -179,16 +179,16 @@ Note: You can have several nodes connecting to a single connection point on anot
 - Use *ibmiot in* nodes to receive the incoming *environment* and *joystick* events.
 - Format the incoming environment data into the appropriate format that the Db2 node expects.  
 
-  The incoming *environment* event will have the following payload structure:
+  The incoming *environment* event will have the following structure:
 
   ``` javascript
-  msg.deviceId = "deviceID"
+  msg.deviceId = "mySenseHat"
   msg.payload = {"d": {"temperature": 35.21,
                        "humidity": 38.31,
                        "pressure": 994.84}}
   ```
 
-  The Db2 node will need the following payload structure based upon the SENSEDATA table and the incoming event payload.
+  The Db2 node will need the following structure based upon the SENSEDATA table and the incoming event payload:
 
   ``` javascript
   msg.payload = {SENSORID: msg.deviceId,
@@ -200,10 +200,9 @@ Note: You can have several nodes connecting to a single connection point on anot
 
 - Take action on the incoming *joystick* events and send a *message* command to the Sense HAT LED.  The message should be different for each direction of the joystick.  
 
-  The incoming *joystick* event will have the following payload structure:
+  The incoming *joystick* event will have the following structure:
 
   ``` javascript
-  msg.deviceId = "deviceID"
   msg.payload = {"d": {"key": "LEFT",
                        "state": 1}}
   ```
@@ -242,10 +241,11 @@ Note: You can have several nodes connecting to a single connection point on anot
 - Create the following Node-RED flow on the Raspberry Pi  
 ![Pi Final Flow](/images/pi-final-flow.png)
 - Break the Sense HAT sensor data into two different event types (environment & joystick).
-- Limit the number of environment events that are sent to the IoT nodes to 1 every 5 seconds.  Otherwise you will quickly overwhelm the data transfer limits imposed by the free IoT Platform service
+- Limit the number of environment events that are sent to the IoT nodes to 1 every 5 seconds.  Otherwise you will quickly overwhelm the data transfer limits imposed by the free IoT Platform service.
 - Send the data to the IoT Platform service as one of two event types.
-- Receive incoming IoT commands called *alarm* and *message*  
-The *alarm* command should light the entire 8x8 LED matrix on the Sense HAT to a solid color provided in the incoming IoT command.  The incoming alarm command will have the following payload structure:
+- Receive incoming IoT commands called *alarm* and *message*.  
+  
+  The *alarm* command should light the entire 8x8 LED matrix on the Sense HAT to a solid color provided in the incoming IoT command.  The incoming alarm command will have the following  structure:
 
   ``` javascript
   msg.command:    "alarm"
@@ -255,7 +255,7 @@ The *alarm* command should light the entire 8x8 LED matrix on the Sense HAT to a
   msg.payload:    {"d": {"color": "red"}}
   ```
 
-  The *message* command should scroll a message across the LED matrix.  The message, the text color, and the background color are all provided in the incoming IoT command.  The incoming message command will have the following payload structure:
+  The *message* command should scroll a message across the LED matrix.  The message, the text color, and the background color are all provided in the incoming IoT command.  The incoming message command will have the following structure:
 
   ``` javascript
   msg.command:    "message"
@@ -267,13 +267,13 @@ The *alarm* command should light the entire 8x8 LED matrix on the Sense HAT to a
                          "message": "message text"}}
   ```
 
-- In order to set the entire 8x8 Sense HAT LED matrix to a specific color, you need to have the following string in the msg.payload *(replace color with a color choice like red, blue, green, etc)*
+- In order to set the entire 8x8 Sense HAT LED matrix to a specific color, you need to have the following string in the msg.payload *(replace color with a color of your choice like red, blue, green, etc)*.
 
   ``` javascript
     msg.payload = "*, *, red"
   ```
 
-- To have a message scroll across the LED matrix, the msg format is a bit more detailed *(again, replace color with a color choice like red, blue, green, etc)*
+- To have a message scroll across the LED matrix, the msg format is a bit more detailed *(again, replace color with a color of your choice like red, blue, green, etc)*.
 
   ``` javascript
   msg.color = "white"

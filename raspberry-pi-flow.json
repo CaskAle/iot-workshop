@@ -134,7 +134,8 @@
         "y": 300,
         "wires": [
             [
-                "ae63b225.4d914"
+                "ae63b225.4d914",
+                "702f9c59.ea9b24"
             ]
         ]
     },
@@ -388,7 +389,7 @@
         "id": "27e215f8.1053ba",
         "type": "wiotp-credentials",
         "name": "",
-        "org": "dperah",
+        "org": "myOrg",
         "serverName": "",
         "devType": "piGateway",
         "devId": "myPiGateway",

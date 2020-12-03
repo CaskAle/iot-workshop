@@ -83,8 +83,9 @@ Two sets of instructions are provided for this workshop.  If you have prior expe
 
 In this portion of the workshop you will create a Node-RED application on the Raspberry Pi that will collect sensor data from a device called a Sense HAT that is attached to the Raspberry Pi.  You will then forward that data to your IoT Platform service so that it can be used by a corresponding Node-RED application that you will create in IBM Cloud.  There are three different types of sensor data available from the Sense HAT (environment, motion, & joystick).  However, you will only be using the environment and joystick data for this workshop.  In addition to sending data to the IoT platform, this application will also receive commands sent from the IBM Cloud application that will control the 8x8 LED matrix that is part of the Sense HAT device.  One command (alarm) will turn the entire matrix into a solid color that is provided as a part of the command.  The other command (message) will scroll a text message across the LED matrix.  The message, the text color, and the background color will all be provided as a part of the command.
 
-Connect to your Raspberry Pi using ssh.  Your Pi can be reached at via it’s IP address by using the following format: ssh pi@<ip address>. 
+Connect to your Raspberry Pi using ssh.  Your Pi can be reached at via it’s IP address by using the following format: ssh pi@[ip address].  
 Note: Depending on your system configuration, you may be able to connect to your laptop by name rather than by ip address.  To do this, you append “.local” to your Raspberry Pi hostname.  For example: ssh pi@raspberrypi.local (pi is the default username on the Raspberry Pi).
+
 - If you are using MacOS or Linux, open a terminal window to execute the ssh command.
 - If you are using windows, start the PuTTY application from the Windows start menu and provide the connection information there.
 - At this point, you will be prompted for the user password.  The Raspberry Pi credentials are:  
@@ -93,8 +94,9 @@ Password: raspberry
 Note: When you connect to the Raspberry Pi for the first time, you may see a message indicating that the authenticity of the host could not be established.  Simply answer with “yes”.
 
 #### Flow 1 – Sending Sense HAT Sensor Data to IoT Platform
-1. Node-RED programming is done via web browser.  In order to get started, fire up another of your team’s laptop browsers and in the address bar enter: <ip address>:1880.  Here you replace
-<ip address> with the ip address of your Raspberry Pi.
+
+1. Node-RED programming is done via web browser.  In order to get started, fire up another of your team’s laptop browsers and in the address bar enter: [ip address]:1880.  Here you replace
+[ip address] with the ip address of your Raspberry Pi.
 Note: Depending on your system configuration, you may be able to connect to your laptop by name rather than by ip address.  To do this, you append “.local” to your Raspberry Pi hostname.  For example: ssh pi@raspberrypi.local (pi is the default username on the Raspberry Pi).
 Also Note:  When you started Node-RED on the Pi, you may have noticed that is said to go to 127.0.0.1:1880.  This would work if you were running the browser on the Pi itself (There is actually a full GUI environment available on the Pi and you can run a browser locally).  However, because you are connecting to the Pi remotely, you need to use the network address of your Raspberry Pi.
 1. From the node palette on the left, find the input node (it should be located in the Raspberry_Pi section of the palette) and drag it out into your Node-RED workspace.
@@ -136,6 +138,7 @@ Note: You can have several nodes connecting to a single connection point on anot
 ---
 
 ## Advanced Path
+
 In the advanced path, instruction will be minimal.  You will be given a task to perform, along with any required configuration data and will need to explore and figure out the proper steps to take.  There are often many ways to solve a given task so do not feel as though you must do something the same way it was done in the Guided Path. Remember, if you run into trouble, you can always refer to the detailed instructions of the Guided Path to get back on track.
 
 ### Create an Internet of Things Platform service and define the Raspberry Pi Gateway device
@@ -143,6 +146,7 @@ In the advanced path, instruction will be minimal.  You will be given a task to 
 - Create an Internet of Things Platform service in your IBM Cloud space.
 - In your newly created IoT Platform service, define a new **Gateway** device type called **piGateway**.
 - Add a new gateway device called **myPiGateway** using the newly defined piGateway device type.
+- Be sure to record the token that you use for the new gateway device.  You will need it later.
 
 **Note:** This workshop treats the Raspberry Pi as an edge gateway and the attached Sense HAT as a downstream sensor device.  It is not necessary to define the Sense HAT device to the IoT Platform service as the gateway device will do it automatically when the Sense HAT connects through it.
 
@@ -176,20 +180,22 @@ In the advanced path, instruction will be minimal.  You will be given a task to 
   The incoming *environment* event will have the following structure:
 
   ``` javascript
-  msg.deviceId = "mySenseHat"
-  msg.payload = {"d": {"temperature": 35.21,
-                       "humidity": 38.31,
-                       "pressure": 994.84}}
+  msg = {"deviceId": "mySenseHat",
+         "deviceType": "SenseHat",
+         "eventType": "environment",
+         "payload": {"d": {"temperature": 35.21,
+                           "humidity": 38.31,
+                           "pressure": 994.84}}}
   ```
 
   The Db2 node will need the following structure based upon the SENSEDATA table and the incoming event payload:
 
   ``` javascript
-  msg.payload = {SENSORID: msg.deviceId,
-                 TEMPERATURE: msg.payload.d.temperature,
-                 HUMIDITY: msg.payload.d.humidity,
-                 PRESSURE: msg.payload.d.pressure,
-                 TIMESENT: 'TIMESTAMP'}
+  msg = {"payload": {"SENSORID": "deviceId",
+                     "TEMPERATURE": temperature,
+                     "HUMIDITY": humidity,
+                     "PRESSURE": pressure,
+                     "TIMESENT": 'TIMESTAMP'}}
   ```
 
 - Take action on the incoming *joystick* events and send a *message* command to the Sense HAT LED.  The message should be different for each direction of the joystick.  
@@ -197,22 +203,26 @@ In the advanced path, instruction will be minimal.  You will be given a task to 
   The incoming *joystick* event will have the following structure:
 
   ``` javascript
-  msg.payload = {"d": {"key": "LEFT",
-                       "state": 1}}
+  msg = {"deviceId": "mySenseHat",
+         "deviceType": "SenseHat",
+         "eventType": "joystick",
+         "payload": {"d": {"key": "LEFT",
+                           "state": 1}}}
   ```
 
-  The *ibmiot out* node for joystick events should use the *message* command type and the payload will need to have the following structure:
+  The *ibmiot out* node for *message* commands should use the following structure:
 
   ``` javascript
-  command:    "message"
-  format:     "json"
-  deviceType: "SenseHat"
-  deviceId:   "mySenseHat"
-  payload:    {"d": {"color": "white",
-                     "background": "blue",
-                     "message": "message text"}}
-  ```
+  msg = {"command": "message",
+         "format": "json",
+         "deviceType": "senseHat",
+         "deviceId": "mySenseHat",
+         "payload": {"d": {"message": "Display Text",
+                           "color": "purple",
+                           "background": "black"}}}
+    ```
 
+  *(use a message and colors of your choice like red, blue, green, etc)*.
 - Send some test *alarm* commands to the Sense HAT LED.  The *inject* nodes should generate a payload in the format expected by the Raspberry Pi based upon the following table:
 
   | Name    | Color |
@@ -221,14 +231,17 @@ In the advanced path, instruction will be minimal.  You will be given a task to 
   | Green   | green |
   | Red     | red   |
 
-  The *ibmiot out* node for alarms should use the *alarm* command type and the payload will need to have the following structure:
+  The *ibmiot out* node for the alarms should use the *alarm* command type and the payload should use the following structure:
   
-  ``` javascript
-  command:    "alarm"
-  format:     "json"
-  deviceType: "SenseHat"
-  deviceId:   "mySenseHat"
-  payload:    {"d": {"color": "red"}}
+   ``` javascript
+  msg = {"command": "message",
+         "format": "json",
+         "deviceType": "senseHat",
+         "deviceId": "mySenseHat",
+         "payload": {"d": {"color": "red"}}}
+    ```
+
+  *(use a color of your choice like red, blue, green, etc)*.
 
 ### Create Raspberry Pi Node-RED Flows
 
@@ -237,43 +250,44 @@ In the advanced path, instruction will be minimal.  You will be given a task to 
 - Break the outbound Sense HAT sensor data into two different event types (environment & joystick).
 - Limit the number of environment events that are sent to the IoT nodes to 1 every 5 seconds.  Otherwise you will quickly overwhelm the data transfer limits imposed by the free IoT Platform service.
 - Send the data to the IoT Platform service as one of two event types with two *Watson IoT* output nodes.
-- Receive incoming IoT commands called *alarm* and *message* using two *Watson IoT* input nodes.  
+- Receive incoming IoT commands called *alarm* and *message* using two *Watson IoT* input nodes.
+- Format the incoming commands into the appropriate format that the Sense HAT node expects.
   
-  The *alarm* command should light the entire 8x8 LED matrix on the Sense HAT to a solid color provided in the incoming IoT command.  The incoming alarm command will have the following  structure:
+  - The *alarm* command should light the entire 8x8 LED matrix on the Sense HAT to a color that is provided in the incoming *alarm* command.  The incoming *alarm* command will have the following  structure:
 
-  ``` javascript
-  msg.command:    "alarm"
-  msg.format:     "json"
-  msg.deviceType: "SenseHat"
-  msg.deviceId:   "mySenseHat"
-  msg.payload:    {"d": {"color": "red"}}
-  ```
+    ``` javascript
+    msg = {"command": "alarm",
+           "payload": {"d": {"color": "red"}}}
+    ```
+  
+    In order to set the entire 8x8 Sense HAT LED matrix to a specific color, you need to send the Sense HAT a string in the msg.payload.  
+  
+    ``` javascript
+    msg = {"payload": "*, *, red"}
+    ```
+  
+    *(use a color of your choice like red, blue, green, etc)*.
+  - The *message* command should scroll text across the LED matrix.  The text, the text color, and the background color are all provided in the incoming *message* command.  The incoming *message* command will have the following structure:
 
-  The *message* command should scroll a message across the LED matrix.  The message, the text color, and the background color are all provided in the incoming IoT command.  The incoming message command will have the following structure:
+    ``` javascript
+    msg = {"command": "message",
+           "format": "json",
+           "deviceType": "senseHat",
+           "deviceId": "mySenseHat",
+           "payload": {"d": {"message": "R",
+                             "color": "purple",
+                             "background": "black"}}}
+    ```
 
-  ``` javascript
-  msg.command:    "message"
-  msg.format:     "json"
-  msg.deviceType: "SenseHat"
-  msg.deviceId:   "mySenseHat"
-  msg.payload:    {"d": {"color": "white",
-                         "background": "blue",
-                         "message": "message text"}}
-  ```
+    To have a message scroll across the LED matrix, the format of the msg object is a bit more detailed.
 
-- In order to set the entire 8x8 Sense HAT LED matrix to a specific color, you need to have the following string in the msg.payload *(replace color with a color of your choice like red, blue, green, etc)*.
+    ``` javascript
+    msg = {"payload": "display text"
+           "color": "white"
+           "background": "black"}
+    ```
 
-  ``` javascript
-    msg.payload = "*, *, red"
-  ```
-
-- To have a message scroll across the LED matrix, the msg format is a bit more detailed *(again, replace color with a color of your choice like red, blue, green, etc)*.
-
-  ``` javascript
-  msg.color = "white"
-  msg.background = "blue"
-  msg.payload = "message text"
-  ```
+    *(use a message and colors of your choice like red, blue, green, etc)*.
 
 ---
 

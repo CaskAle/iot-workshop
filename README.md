@@ -104,7 +104,7 @@ Also Note:  When you started Node-RED on the Pi, you may have noticed that is sa
 1. Next, find and add a  node (In the output section) to the right of the Sense HAT node.
 1. Open the debug node and change the output to complete msg object.  This will allow you to view the entire msg being received by the prior node.  It can be very useful in helping to format the msg that needs to be sent to the next node.
 1. Connect your Sense HAT node to your debug node by clicking and dragging from one connection point to the other .
-1. At this point, verify that your Sense HAT is producing output by clicking . 
+1. At this point, verify that your Sense HAT is producing output by clicking.
 1. On the right side of the page you should see a tab labeled “debug”.  Click on that tab and you should see a tremendous amount of data flowing into your debug node from the Sense HAT.
 1. On the right side of the debug node you will see a green toggle button .  This allows you to stop/start the output to that particular debug node.  Turn off the output by clicking the toggle and the data will stop scrolling by in the debug panel.  Now you can get a closer look at the actual messages that the Sense HAT is sending.  Take a minute to examine the debug output.  You will see that each Sense HAT message has a topic and a payload.  Notice that the topic will match one of the three data types that the Sense HAT reports (environment, motion, & joystick).  In order to perform different actions on the different sensor topics, we will separate them into unique events.  
 1. Find the switch node (function section) and add it to your workspace to the right of your Sense HAT node.  
@@ -175,7 +175,7 @@ In the advanced path, instruction will be minimal.  You will be given a task to 
   **Note:** You will need to use the Node-RED Palette Manager to install the **node-red-contrib-scx-ibmiotapp** set of IoT input and output nodes.
 
 - Use *ibmiot in* nodes to receive the incoming *environment* and *joystick* events.
-- Format the incoming environment data into the appropriate format that the Db2 node expects.  
+- Format the incoming environment data into the appropriate format that the *Db2* node expects.  
 
   The incoming *environment* event will have the following structure:
 
@@ -188,14 +188,14 @@ In the advanced path, instruction will be minimal.  You will be given a task to 
                            "pressure": 994.84}}}
   ```
 
-  The Db2 node will need the following structure based upon the SENSEDATA table and the incoming event payload:
+  The *Db2* node will need the following structure based upon the SENSEDATA table and the incoming event payload:
 
   ``` javascript
   msg = {"payload": {"SENSORID": "deviceId",
                      "TEMPERATURE": temperature,
                      "HUMIDITY": humidity,
                      "PRESSURE": pressure,
-                     "TIMESENT": 'TIMESTAMP'}}
+                     "TIMESENT": "TIMESTAMP"}}
   ```
 
 - Take action on the incoming *joystick* events and send a *message* command to the Sense HAT LED.  The message should be different for each direction of the joystick.  
@@ -223,7 +223,7 @@ In the advanced path, instruction will be minimal.  You will be given a task to 
     ```
 
   *(use a message and colors of your choice like red, blue, green, etc)*.
-- Send some test *alarm* commands to the Sense HAT LED.  The *inject* nodes should generate a payload in the format expected by the Raspberry Pi based upon the following table:
+- Send some test *alarm* commands to the Sense HAT LED.  The *inject* nodes should generate a payload in the format expected by the *Sense Hat* node based upon the following table:
 
   | Name    | Color |
   | ---     | ---   |
@@ -260,14 +260,14 @@ In the advanced path, instruction will be minimal.  You will be given a task to 
            "payload": {"d": {"color": "red"}}}
     ```
   
-    In order to set the entire 8x8 Sense HAT LED matrix to a specific color, you need to send the Sense HAT a string in the msg.payload.  
+    In order to set the entire 8x8 Sense HAT LED matrix to a specific color, you need to send the *Sense Hat* node a string in the msg.payload.  
   
     ``` javascript
     msg = {"payload": "*, *, red"}
     ```
   
     *(use a color of your choice like red, blue, green, etc)*.
-  - The *message* command should scroll text across the LED matrix.  The text, the text color, and the background color are all provided in the incoming *message* command.  The incoming *message* command will have the following structure:
+  - The *message* command should scroll text across the Sense HAT LED matrix.  The text, the text color, and the background color are all provided in the incoming *message* command.  The incoming *message* command will have the following structure:
 
     ``` javascript
     msg = {"command": "message",
@@ -279,10 +279,10 @@ In the advanced path, instruction will be minimal.  You will be given a task to 
                              "background": "black"}}}
     ```
 
-    To have a message scroll across the LED matrix, the format of the msg object is a bit more detailed.
+    To have a message scroll across the Sense HAT LED matrix, the format of the msg object is a bit more detailed.
 
     ``` javascript
-    msg = {"payload": "display text",
+    msg = {"payload": "Display Text",
            "color": "white",
            "background": "black"}
     ```

@@ -234,11 +234,11 @@ In the advanced path, instruction will be minimal.  You will be given a task to 
   The *ibmiot out* node for the alarms should use the *alarm* command type and the payload should use the following structure:
   
    ``` javascript
-  msg = {"command": "message",
-         "format": "json",
-         "deviceType": "senseHat",
-         "deviceId": "mySenseHat",
-         "payload": {"d": {"color": "red"}}}
+   msg = {"command": "message",
+          "format": "json",
+          "deviceType": "senseHat",
+          "deviceId": "mySenseHat",
+          "payload": {"d": {"color": "red"}}}
     ```
 
   *(use a color of your choice like red, blue, green, etc)*.
@@ -282,8 +282,8 @@ In the advanced path, instruction will be minimal.  You will be given a task to 
     To have a message scroll across the LED matrix, the format of the msg object is a bit more detailed.
 
     ``` javascript
-    msg = {"payload": "display text"
-           "color": "white"
+    msg = {"payload": "display text",
+           "color": "white",
            "background": "black"}
     ```
 

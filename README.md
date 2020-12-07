@@ -170,7 +170,7 @@ In the advanced path, instruction will be minimal.  You will be given a task to 
 - Create a new Node-RED application from the Node-RED template in the catalog.
 - Connect your IoT Platform and Db2 services to your new application.
 - Create the following Node-RED flow in your IBM Cloud Node-RED application:  
-![Cloud Final Flow](/images/cloud-final-flow.png)  
+![Cloud Final Flow](/images/cloud-flow-final.png)  
 
   **Note:** You will need to use the Node-RED Palette Manager to install the **node-red-contrib-scx-ibmiotapp** set of IoT input and output nodes.
 

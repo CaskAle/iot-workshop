@@ -246,7 +246,7 @@ In the advanced path, instruction will be minimal.  You will be given a task to 
 ### Create Raspberry Pi Node-RED Flows
 
 - Create the following Node-RED flow on the Raspberry Pi  
-![Pi Final Flow](/images/pi-final-flow.png)
+![Pi Final Flow](/images/pi-flow-final.png)
 - Break the outbound Sense HAT sensor data into two different event types (environment & joystick).
 - Limit the number of environment events that are sent to the IoT nodes to 1 every 5 seconds.  Otherwise you will quickly overwhelm the data transfer limits imposed by the free IoT Platform service.
 - Send the data to the IoT Platform service as one of two event types with two *Watson IoT* output nodes.

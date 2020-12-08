@@ -54,7 +54,7 @@ Note: be sure to answer `y` when asked about installing the Pi-specific nodes.
 
 ## Node-RED
 
-[Node-RED](https://nodered.org/) is a tool for developing [Node.js](https://nodejs.org/en/) JavaScript applications in a visual drag & drop fashion.  It is a web browser based editor with a rich and extensible library of visual nodes that are linked together to describe the logical flow of an application.
+[Node-RED](https://nodered.org/) is a tool for developing [Node.js](https://nodejs.org/en/) JavaScript applications in a visual drag & drop fashion.  It is a web browser based editor with a rich and extensible library of visual nodes that are linked together to describe the logical flow of an application.  Check out this short [Node-RED intro video](https://youtu.be/ksGeUD26Mw0?list=PLyNBB9VCLmo1hyO-4fIZ08gqFcXBkHy-6).
 
 ### Starting the Node-RED server
 
@@ -85,9 +85,14 @@ If you are connecting to Node-RED on your remote Raspberry Pi, you simply replac
 **Note:** As this workshop is structured to demonstrate an IoT and cloud environment, the instructions will assume that you are connecting to remote servers.  
 At this point, you should be presented with the Node-RED design tool:
 ![Node-RED Editor](/images/node-red.png)
-On the left side of the editor, you will see the *Node Palette*.  On the right is the *Information Panel*.
+On the left side of the editor, you will see the *Node Palette*.  On the right is the *Information Panel*.  the center section is your *Design Canvas*.  To build a Node-RED application:
 
+- Drag nodes from the *node palette* on to the *design canvas*.  
+- Customize the nodes with application logic by double clicking on them.  
+- Nodes are then linked together with *wires* to create the logical flow of your application.  To create a wire between two nodes, you simply click on the anchor of one node and drag over to an anchor on another node.
+- During the design, use the *information panel* to understand the specific function and requirements of each node type.
 
+Once you have you application ready to go, clicking the ![Deploy](/images/deploy.png) button launches it.
 
 ## Start The Workshop
 

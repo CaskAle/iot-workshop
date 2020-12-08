@@ -106,22 +106,16 @@ Two sets of instructions are provided for this workshop.  If you have prior expe
 
 In this portion of the workshop you will create a Node-RED application on the Raspberry Pi that will collect sensor data from a device called a Sense HAT that is attached to the Raspberry Pi.  You will then forward that data to your IoT Platform service so that it can be used by a corresponding Node-RED application that you will create in IBM Cloud.  There are three different types of sensor data available from the Sense HAT (environment, motion, & joystick).  However, you will only be using the environment and joystick data for this workshop.  In addition to sending data to the IoT platform, this application will also receive commands sent from the IBM Cloud application that will control the 8x8 LED matrix that is part of the Sense HAT device.  One command (alarm) will turn the entire matrix into a solid color that is provided as a part of the command.  The other command (message) will scroll a text message across the LED matrix.  The message, the text color, and the background color will all be provided as a part of the command.
 
-Connect to your Raspberry Pi using ssh.  Your Pi can be reached at via it’s IP address by using the following format: ssh pi@[ip address].  
-Note: Depending on your system configuration, you may be able to connect to your laptop by name rather than by ip address.  To do this, you append “.local” to your Raspberry Pi hostname.  For example: ssh pi@raspberrypi.local (pi is the default username on the Raspberry Pi).
+#### Flow #1 – Local testing of the Sense-HAT
 
-- If you are using MacOS or Linux, open a terminal window to execute the ssh command.
-- If you are using windows, start the PuTTY application from the Windows start menu and provide the connection information there.
-- At this point, you will be prompted for the user password.  The Raspberry Pi credentials are:  
-User ID: pi  
-Password: raspberry  
-Note: When you connect to the Raspberry Pi for the first time, you may see a message indicating that the authenticity of the host could not be established.  Simply answer with “yes”.
+1. Refer to the [Node-RED](#node-red) section and ensure that the Node-RED server is running on your Raspberry Pi.
+1. Start your web browser and connect to the Node-RED server on the Raspberry Pi: `http://<server address>:1880`
+1. Using the node palette, locate the appropriate node and create a flow in your design editor that looks like this:
+![pi-flow-1](/images/pi-flow-1.png)
+**Note:** An exact match to this image is not required.  You can place the nodes wherever you like in the editor.
 
-#### Flow 1 – Sending Sense HAT Sensor Data to IoT Platform
+#### Flow #2 – Sending Sense HAT Sensor Data to IoT Platform
 
-1. Node-RED programming is done via web browser.  In order to get started, fire up another of your team’s laptop browsers and in the address bar enter: [ip address]:1880.  Here you replace
-[ip address] with the ip address of your Raspberry Pi.
-Note: Depending on your system configuration, you may be able to connect to your laptop by name rather than by ip address.  To do this, you append “.local” to your Raspberry Pi hostname.  For example: ssh pi@raspberrypi.local (pi is the default username on the Raspberry Pi).
-Also Note:  When you started Node-RED on the Pi, you may have noticed that is said to go to 127.0.0.1:1880.  This would work if you were running the browser on the Pi itself (There is actually a full GUI environment available on the Pi and you can run a browser locally).  However, because you are connecting to the Pi remotely, you need to use the network address of your Raspberry Pi.
 1. From the node palette on the left, find the input node (it should be located in the Raspberry_Pi section of the palette) and drag it out into your Node-RED workspace.
 1. Double click on the new Sense HAT node to open its settings and ensure that all three event types are being reported by checking each box.
 1. Next, find and add a  node (In the output section) to the right of the Sense HAT node.

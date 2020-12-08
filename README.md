@@ -52,7 +52,11 @@ Note: be sure to answer `y` when asked about installing the Pi-specific nodes.
 - Install additional Node-RED nodes for the Sense HAT and the IoT service  
 `npm install --prefix ~/.node-red node-red-node-pi-sense-hat node-red-contrib-ibm-watson-iot`
 
-## Starting Node-RED
+## Node-RED
+
+[Node-RED](https://nodered.org/) is a tool for developing [Node.js](https://nodejs.org/en/) JavaScript applications in a visual drag & drop fashion.  It is a web browser based editor with a rich and extensible library of visual nodes that are linked together to describe the logical flow of an application.
+
+### Starting the Node-RED server
 
 There are two methods for starting Node-RED on the Raspberry Pi. You can either start/stop it manually when needed, or you can run it as a service so that it starts automatically every time the system boots.
 
@@ -67,9 +71,22 @@ To stop the service temporarily
 To start it again:  
 `sudo systemctl start nodered.service`  
 To disable autostarting at boot  
-`sudo systemctl disable nodered.service`
-
+`sudo systemctl disable nodered.service`.  
 [Learn more about Node-RED on a Raspberry Pi here](https://nodered.org/docs/getting-started/raspberrypi).
+
+### Working with Node-RED
+
+Once the Node-RED server is running, you are ready to start building a Node-RED application.  Everything is done in a web browser with Node-RED.  The server runs on port 1880 on your local system or on a remote server.  All you need to do is start up a web browser and point it to the server that you wish to work with.  
+`http://<server address>:1880`.  
+For example, on a local system, you would use either:  
+`http://localhost:1880` or  
+`http://127.0.0.1:1880`  
+If you are connecting to Node-RED on your remote Raspberry Pi, you simply replace the ip address or hostname in the addresses above with those of your Raspberry Pi.  
+**Note:** As this workshop is structured to demonstrate an IoT and cloud environment, the instructions will assume that you are connecting to remote servers.  
+At this point, you should be presented with the Node-RED design tool:
+![Node-RED Editor](/images/node-red.png)
+
+
 
 ## Start The Workshop
 

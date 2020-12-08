@@ -85,6 +85,7 @@ If you are connecting to Node-RED on your remote Raspberry Pi, you simply replac
 **Note:** As this workshop is structured to demonstrate an IoT and cloud environment, the instructions will assume that you are connecting to remote servers.  
 At this point, you should be presented with the Node-RED design tool:
 ![Node-RED Editor](/images/node-red.png)
+On the left side of the editor, you will see the *Node Palette*.  On the right is the *Information Panel*.
 
 
 

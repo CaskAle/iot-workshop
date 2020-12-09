@@ -61,8 +61,7 @@ Note: be sure to answer `y` when asked about installing the Pi-specific nodes.
 There are two methods for starting Node-RED on the Raspberry Pi. You can either start/stop it manually when needed, or you can run it as a service so that it starts automatically every time the system boots.
 
 - Manual start/stop  
-`node-red-start` and  
-`node-red-stop`  
+`node-red-start` and `node-red-stop`  
 **Note:** When the Node-RED app starts, using this method, the last action it performs is to start a logging function.  You can exit this logging, if needed, by pressing Ctrl-c.  This will not stop Node-RED itself.  If/When you want to stop Node-RED, you need to issue the stop command.
 - Start automatically as a service  
 `sudo systemctl enable --now nodered.service`  
@@ -79,8 +78,7 @@ To disable autostarting at boot
 Once the Node-RED server is running, you are ready to start building a Node-RED application.  Everything is done in a web browser with Node-RED.  The server runs on port 1880 on your local system or on a remote server.  All you need to do is start up a web browser and point it to the server that you wish to work with.  
 `http://<server address>:1880`.  
 For example, on a local system, you would use either:  
-`http://localhost:1880` or  
-`http://127.0.0.1:1880`  
+`http://localhost:1880` or  `http://127.0.0.1:1880`  
 If you are connecting to Node-RED on your remote Raspberry Pi, you simply replace the ip address or hostname in the addresses above with those of your Raspberry Pi.  
 **Note:** As this workshop is structured to demonstrate an IoT and cloud environment, the instructions will assume that you are connecting to remote servers.  
 At this point, you should be presented with the Node-RED design tool:
@@ -120,9 +118,9 @@ In this first flow, you will simply send data to and revieve data from the Sense
 ![pi-flow-1](/images/pi-flow-1.png)  
    **Note:** An exact match to this image is not required.  You can place the nodes wherever you like in the editor.
 1. Configure the nodes:
-   - The *Sense HAT* input node is reponsible for collecting sensor data from the actual device and forwarding it on.  In this case it goes to a *debug* node.  Double clicking the node will open the configuration panel.  In that panel, you will see that you can set which sensor data you are interested in.  In this workshop we will not be using *motion* sensor data so, uncheck that box.
-   - The *debug* node is used to
-   - The *inject* node  
+   - The `Sense HAT` input node is reponsible for collecting sensor data from the actual device and forwarding it on.  In this case it goes to a debug node.  Double clicking the node will open the configuration panel.  In that panel, you will see that you can set which sensor data you are interested in.  In this workshop we will not be using **motion** sensor data so, uncheck that box.
+   - The `debug` node is used to
+   - The `inject` node  
    To set the entire matrix to a color:  
    `msg.payload` to `*,*,color`  
 
@@ -131,39 +129,37 @@ In this first flow, you will simply send data to and revieve data from the Sense
    `msg.payload` to `text color`  
    `msg.payload` to `background color`  
    Colors can be...
-   - The *Sense HAT* output node sends a specifically constructed message out to the Sense HAT LED matrix.  There are no configuration settings for this node.  The data package is created by the *inject* nodes and then sent straight through.
+   - The `Sense HAT` output node sends a specifically constructed message out to the Sense HAT LED matrix.  There are no configuration settings for this node.  The data package is created by the inject nodes and then sent straight through.
 1. Click the deploy button to execute this test flow and verify that the Sense HAT is working properly.
-   - In the information panel select the debug tab (it looks like a bug).  At this point, you should see a tremendous amount of data flowing into your *debug* node from the *Sense HAT* node.  
-   - Stop the debug output by clicking green button on the right side of the *debug* node and the data in the debug panel will stop scrolling.  
+   - In the information panel select the debug tab (it looks like a bug).  At this point, you should see a tremendous amount of data flowing into your debug node from the Sense HAT node.  
+   - Stop the debug output by clicking green button on the right side of the debug node and the data in the debug panel will stop scrolling.  
    - Take a minute to examine the debug output.  You will see that each message has a topic and a payload.  Notice that the topic will match one of the two data types that the Sense HAT reports (environment & joystick).  
    **Note:** You will only see joystick topics when you actually use the Sense HAT joystick.
-   - Test the LED by clicking the buttons on the left side of the *inject* nodes.  If properly configured, the LED on the Sense HAT will respond by performing the requested action.
+   - Test the LED by clicking the buttons on the left side of the inject nodes.  If properly configured, the LED on the Sense HAT will respond by performing the requested action.
 
 #### Flow #2 – Send Sensor Data to IBM Cloud
 
-In this flow, the collected data will now be forwarded up to the IBM Internet of Things Platform where it will be further processed.  Before sending the data on, the environment data needs to be limited in order to not exceed the limits that are placed on the free IoT platform service.
+In this flow, the collected data will now be forwarded up to the IBM Internet of Things Platform where it will be further processed.  One thing that you may have noticed when viewing the debug output from the prior flow is sheer volume of events being generated by the environment topic.  If you were to send every one of these events to the IoT Platform service, you would quickly use up the 200MB data limit that is imposed on a free IoT Platform service.  So, before sending the environment data onward, it needs to be limited.  You will do this with a `delay` node.
 
 1. Using the node palette, locate the appropriate nodes and add a new flow, below the first flow, that looks like this:  
 ![pi-flow-2](/images/pi-flow-2.png)  
    **Note:** Again, an exact match to this image is not required.
 1. Configure the nodes:
-   - One of the `Sense HAT` nodes should output only *environment* data.  The other should output only *joystick* data.
-   - The `delay` node...
+   - One of the Sense HAT nodes should output only **environment** data.  The other should output only **joystick** data.
+   - The `delay` node is used to put limits on the number of messages leaving the node.  In order to keep limit the environment data going up to the cloud, open the node settings and set the action type to **Rate Limit** for **All messages**.  Set the rate to **1 message every 5 seconds** and check the box to **drop intermediate messages**.  This will cause the node to discard all but one message every five seconds.
    - The `Watson IoT` output nodes...
 
-1. One thing that you may have noticed when viewing the debug output is sheer volume of events being generated by both the environment and the motion topics.  If you were to send every one of these events to the IoT Platform service, you would quickly use up the 200MB data limit that is imposed on a free IoT Platform service.  This is also a consideration for your clients as the IoT Platform service does have data transmission charge.  To deal with this, add two delay nodes.  Connect one to the environment output and one to the motion output of the switch node.
-1. For each delay node, open the settings and set the action to Limit rate to.
-1. Limit the rate to 1 message every 5 seconds and check the box to drop intermediate messages.  This will cause the application to discard all messages except for one every 5 seconds.
-Note: You can have several nodes connecting to a single connection point on another node.
-1. Redeploy the application by once again clicking deploy and you should see a dramatic decrease in the number of messages received.  
+     Each IoT node will send a separate event type to the IoT Platform service.  You will need to configure them by opening settings and configuring as follows:
 
-1. Each IoT node will send a separate event type to the IoT Platform service.  You will need to configure them by opening settings and configuring as follows:
-   - Because we defined the Raspberry Pi as a Gateway device, you need to connect as a Gateway.
-   - When configuring the first of these nodes, you will need to Add new wiotp-credentials.  You do this by clicking on the  in the credentials line.  Here you will specify the gateway device that you defined earlier.  Use the values that you recorded during the IoT device definition to fill in the appropriate fields.  Do not modify any other fields in this section.
-   - The device type and Device ID can be any value that helps to identify their purpose.  We will use the values provided in the image.
-   - The value entered into Event type will define the actual event that this message comprises.  Use one of the three values in each node.
+     Because we defined the Raspberry Pi as a Gateway device, you need to connect as a Gateway.
 
-1. Once again, deploy the application.  If everything has gone well, you will see a green dot below the IoT nodes that indicates they are now connected to the IoT Platform service.
+     When configuring the first of these nodes, you will need to Add new wiotp-credentials.  You do this by clicking on the  in the credentials line.  Here you will specify the gateway device that you defined earlier.  Use the values that you recorded during the IoT device definition to fill in the appropriate fields.  Do not modify any other fields in this section.
+
+     The device type and Device ID can be any value that helps to identify their purpose.  We will use the values provided in the image.
+
+     The value entered into Event type will define the actual event that this message comprises.  Use one of the three values in each node.
+
+1. Redeploy the application by clicking deploy and, if everything has gone well, you will see a green dot below the IoT nodes that indicates they are now connected to the IoT Platform service. You should also see a dramatic decrease in the number of messages received in the debug info panel.  If not, ensure that you have any other debug nodes toggled to the off setting.
 
 #### Flow #3 – Recieve IoT commands from IBM Cloud
 

@@ -62,7 +62,7 @@ There are two methods for starting Node-RED on the Raspberry Pi. You can either 
 
 - Manual start/stop  
 `node-red-start` and `node-red-stop`  
-**Note:** When the Node-RED app starts, using this method, the last action it performs is to start a logging function.  You can exit this logging, if needed, by pressing Ctrl-c.  This will not stop Node-RED itself.  If/When you want to stop Node-RED, you need to issue the stop command.
+>**Note:** When the Node-RED app starts, using this method, the last action it performs is to start a logging function.  You can exit this logging, if needed, by pressing Ctrl-c.  This will not stop Node-RED itself.  If/When you want to stop Node-RED, you need to issue the stop command.
 - Start automatically as a service  
 `sudo systemctl enable --now nodered.service`  
 To stop the service temporarily  
@@ -80,7 +80,7 @@ Once the Node-RED server is running, you are ready to start building a Node-RED 
 For example, on a local system, you would use either:  
 `http://localhost:1880` or  `http://127.0.0.1:1880`  
 If you are connecting to Node-RED on your remote Raspberry Pi, you simply replace the ip address or hostname in the addresses above with those of your Raspberry Pi.  
-**Note:** As this workshop is structured to demonstrate an IoT and cloud environment, the instructions will assume that you are connecting to remote servers.  
+>**Note:** As this workshop is structured to demonstrate an IoT and cloud environment, the instructions will assume that you are connecting to remote servers.  
 At this point, you should be presented with the Node-RED design tool:
 ![Node-RED Editor](/images/node-red.png)
 On the left side of the editor, you will see the *Node Palette*.  On the right is the *Information Panel*.  the center section is your *Design Canvas*.  
@@ -116,7 +116,7 @@ In this first flow, you will simply send data to and revieve data from the Sense
 `http://<server name/address>:1880`
 1. Using the node palette, locate the appropriate nodes and create a flow in your design editor that looks like this:  
 ![pi-flow-1](/images/pi-flow-1.png)  
-**Note:** An exact match to this image is not required.  You can place the nodes wherever you like in the editor.
+>**Note:** An exact match to this image is not required.  You can place the nodes wherever you like in the editor.
 1. Configure the nodes:
    - The `Sense HAT` input node is reponsible for collecting sensor data from the actual device, plasing it into a msg object and forwarding it on.  In this case it goes to a debug node.  Double clicking on any node will open the settings for that node.  In the settings for the Sense HAT node, you will see that you can set which sensor data you are interested in.  In this workshop we will not be using the motion sensor data so, **uncheck Motion Events**.
    - The `debug` node is used to allow a developer the opportunity to inspect the message data that is flowing through the application.  Debug nodes can be placed anywhere in the flow to provide the developer the opportunity to validate that the message looks the way it should.  The settings for the debug node allow you to determine just how much of the msg object you want to see.  In this case, we are interested in the entire message so set **Output** to **complete msg object**
@@ -124,19 +124,19 @@ In this first flow, you will simply send data to and revieve data from the Sense
    - The `inject` node is a way to create a message object and insert it into the application flow.  It is useful for testing an application flow by inserting sample messages in order to verify correct application results.  In this case, the message object that is created will go directly to the Sense HAT output node.  In this flow, your inject nodes will create two specific message objects.  
 
      The first sets the entire LED matrix to a specific color (eg. "red").  To do this, you set the **msg.payload** of the msg object to a **string** value of **\*,\*,color**.  Use this message format for the *Alarm* and the *Off* inject nodes.  
-     **Note:** The color specified can be any of the well-known [HTML color names](https://en.wikipedia.org/wiki/Web_colors#HTML_color_names) (eg. red or aquamarine).  In addition, *off* is a valid color.
+     >**Note:** The color specified can be any of the well-known [HTML color names](https://en.wikipedia.org/wiki/Web_colors#HTML_color_names) (eg. red or aquamarine).  In addition, *off* is a valid color.
 
      The second scrolls a message across the screen.  In order to do this, there are three variables in the message object that must be set to **string** values:  
      Set **msg.payload** to the message you wish to display.  
      Set **msg.color** to the desired text color.  
      Set **msg.background** to the desired background color.  
-     **Hint:**  Use the `+add` button in the inject node settings to set multiple variable values.  Use the `x` button to delete uneeded values.
+     >**Hint:**  Use the `+add` button in the inject node settings to set multiple variable values.  Use the `x` button to delete uneeded values.
 
 1. At this point you should be able to test the flow.  Click the deploy button to execute this test flow and verify that the Sense HAT is working properly.
    - In the information panel to the right of your design palette, select the debug tab (it looks like a bug).  At this point, you should see a tremendous amount of data scrolling by.  This is coming from the debug node.  
    - Stop the debug output by clicking green button on the right side of the debug node and the data in the debug panel will stop scrolling.  
    - Take a minute to examine the debug output.  You will see that each message has a topic and a payload.  Notice that the topic will match one of the two sensors that the Sense HAT is configured to report (environment & joystick).  
-   **Note:** You will only see joystick topics when you actually use the Sense HAT joystick.
+   >**Note:** You will only see joystick topics when you actually use the Sense HAT joystick.
    - Test the LED by clicking the buttons on the left side of the inject nodes to actually inject the message.  If properly configured, the LED on the Sense HAT will respond by performing the requested action.
 
 #### Flow #2 – Send Sensor Data to IBM Cloud
@@ -145,7 +145,7 @@ In this flow, the collected data will now be forwarded up to the IBM Internet of
 
 1. Using the node palette, locate the appropriate nodes and add a new flow, below the first flow, that looks like this:  
 ![pi-flow-2](/images/pi-flow-2.png)  
-   **Note:** Again, an exact match to this image is not required.
+   >**Note:** Again, an exact match to this image is not required.
 1. Configure the nodes:
    - One of the two `Sense HAT` input nodes should output only **environment** data.  The other should output only **joystick** data.
    - The `delay` node is used to put limits on the number of messages leaving the node.  In order to limit the amount of data going up to the cloud, open the delay node settings and set the **Action** to **Rate Limit** for **All messages**.  Set the rate to **1 msg(s) per 5 seconds** and check the box to **drop intermediate messages**.  This will cause the node to discard all but one message every five seconds.
@@ -167,6 +167,11 @@ In this flow, the collected data will now be forwarded up to the IBM Internet of
 
 1. Using the node palette, locate the appropriate nodes and add another new flow, below the second flow, that looks like this:  
 ![pi-flow-3](/images/pi-flow-3.png)
+1. Configure the nodes:
+   - `Watson IoT` input
+   - `change`
+   - `template`
+
 1. Redeploy the application by clicking deploy and, if everything has gone well, you will see a green dot below the IoT nodes that indicates they are now connected to the IoT Platform service.  Until you have completed and deployed the server side application, you will not be able to verify the correct execution of this flow.
 
 In the end, your Raspberry Pi Node-RED application should resemble the following:  
@@ -190,7 +195,7 @@ In the advanced path, instruction will be minimal.  You will be given a task to 
 - Add a new gateway device called **myPiGateway** using the newly defined piGateway device type.
 - Be sure to record the token that you use for the new gateway device.  You will need it later.
 
-**Note:** This workshop treats the Raspberry Pi as an edge gateway and the attached Sense HAT as a downstream sensor device.  It is not necessary to define the Sense HAT device to the IoT Platform service as the gateway device will do it automatically when the Sense HAT connects through it.
+>**Note:** This workshop treats the Raspberry Pi as an edge gateway and the attached Sense HAT as a downstream sensor device.  It is not necessary to define the Sense HAT device to the IoT Platform service as the gateway device will do it automatically when the Sense HAT connects through it.
 
 ### Create a DB2 database service and a table to store sensor data
 
@@ -205,7 +210,7 @@ In the advanced path, instruction will be minimal.  You will be given a task to 
   | PRESSURE        | DOUBLE        |
   | TIMESENT        | TIMESTAMP     |
 
-  **Note:** The name of the table and columns are an important element of later steps so be sure to double check your spelling.
+  >**Note:** The name of the table and columns are an important element of later steps so be sure to double check your spelling.
 
 ### Create a Node-RED Application in your IBM Cloud space
 
@@ -214,7 +219,7 @@ In the advanced path, instruction will be minimal.  You will be given a task to 
 - Create the following Node-RED flow in your IBM Cloud Node-RED application:  
 ![Cloud Final Flow](/images/cloud-flow-final.png)  
 
-  **Note:** You will need to use the Node-RED Palette Manager to install the **node-red-contrib-scx-ibmiotapp** set of IoT input and output nodes.
+  >**Note:** You will need to use the Node-RED Palette Manager to install the **node-red-contrib-scx-ibmiotapp** set of IoT input and output nodes.
 
 - Use *ibmiot in* nodes to receive the incoming *environment* and *joystick* events.
 - Format the incoming environment data into the appropriate format that the *Db2* node expects.  

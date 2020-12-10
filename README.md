@@ -124,9 +124,9 @@ In this first flow, you will simply send data to and revieve data from the Sense
    - The `inject` node is a way to create a message object and insert it into the application flow.  It is useful for testing an application flow by inserting sample messages in order to verify correct application results.  In this case, the message object that is created will go directly to the Sense HAT output node.  In this flow, your inject nodes will create two specific message objects.  
 
      The first sets the entire LED matrix to a specific color (eg. "red").  To do this, you set the **msg.payload** of the msg object to a **string** value of **\*,\*,color**.  Use this message format for the *Alarm* and the *Off* inject nodes.  
-     **Note:** The color specified can be any of the well-known [HTML colour names](https://en.wikipedia.org/wiki/Web_colors#HTML_color_names) (eg. red or aquamarine).  In addition, off is a valid color.
+     **Note:** The color specified can be any of the well-known [HTML color names](https://en.wikipedia.org/wiki/Web_colors#HTML_color_names) (eg. red or aquamarine).  In addition, *off* is a valid color.
 
-     The second scrolls a message across the screen.  In order to do this, there are three variables in the message object that must be set to string values:  
+     The second scrolls a message across the screen.  In order to do this, there are three variables in the message object that must be set to **string** values:  
      Set **msg.payload** to the message you wish to display.  
      Set **msg.color** to the desired text color.  
      Set **msg.background** to the desired background color.  
@@ -147,8 +147,8 @@ In this flow, the collected data will now be forwarded up to the IBM Internet of
 ![pi-flow-2](/images/pi-flow-2.png)  
    **Note:** Again, an exact match to this image is not required.
 1. Configure the nodes:
-   - One of the `Sense HAT` input nodes should output only **environment** data.  The other should output only **joystick** data.
-   - The `delay` node is used to put limits on the number of messages leaving the node.  In order to keep limit the environment data going up to the cloud, open the node settings and set the action type to **Rate Limit** for **All messages**.  Set the rate to **1 message every 5 seconds** and check the box to **drop intermediate messages**.  This will cause the node to discard all but one message every five seconds.
+   - One of the two `Sense HAT` input nodes should output only **environment** data.  The other should output only **joystick** data.
+   - The `delay` node is used to put limits on the number of messages leaving the node.  In order to limit the amount of data going up to the cloud, open the delay node settings and set the **Action** to **Rate Limit** for **All messages**.  Set the rate to **1 msg(s) per 5 seconds** and check the box to **drop intermediate messages**.  This will cause the node to discard all but one message every five seconds.
    - The `Watson IoT` output nodes...
 
      Each IoT node will send a separate event type to the IoT Platform service.  You will need to configure them by opening settings and configuring as follows:
@@ -164,6 +164,12 @@ In this flow, the collected data will now be forwarded up to the IBM Internet of
 1. Redeploy the application by clicking deploy and, if everything has gone well, you will see a green dot below the IoT nodes that indicates they are now connected to the IoT Platform service. You should also see a dramatic decrease in the number of messages received in the debug info panel.  If not, ensure that you have any other debug nodes toggled to the off setting.
 
 #### Flow #3 – Recieve IoT commands from IBM Cloud
+
+1. Using the node palette, locate the appropriate nodes and add a new flow, below the first flow, that looks like this:  
+![pi-flow-3](/images/pi-flow-3.png)
+
+In the end, your Raspberry Pi Node_RED should resemble the following:  
+![pi-flow-final](/images/pi-flow-final.png)
 
 ### Create IBM Cloud Db2 Service
 

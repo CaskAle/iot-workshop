@@ -165,13 +165,15 @@ In this flow, the collected data will now be forwarded up to the IBM Internet of
 
 #### Flow #3 – Recieve IoT commands from IBM Cloud
 
-1. Using the node palette, locate the appropriate nodes and add a new flow, below the first flow, that looks like this:  
+1. Using the node palette, locate the appropriate nodes and add another new flow, below the second flow, that looks like this:  
 ![pi-flow-3](/images/pi-flow-3.png)
+1. Redeploy the application by clicking deploy and, if everything has gone well, you will see a green dot below the IoT nodes that indicates they are now connected to the IoT Platform service.  Until you have completed and deployed the server side application, you will not be able to verify the correct execution of this flow.
 
-In the end, your Raspberry Pi Node_RED should resemble the following:  
+In the end, your Raspberry Pi Node-RED application should resemble the following:  
 ![pi-flow-final](/images/pi-flow-final.png)
 
 ### Create IBM Cloud Db2 Service
+The server side Node-RED application stores environment data in a Db2 database.  So, before creating the application itself, you will need to create an instance of the Db2 service in your IBM Cloud account.  You will also need to create a table in the Db2 database for storing the data.
 
 ### Create IBM Cloud Node-RED Application
 

@@ -48,21 +48,22 @@ A great introduction to the Sense HAT, including attachment instructions, can be
 `sudo apt install -y sense-hat build-essential git`
 - Install/Update NodeJS & Node-RED  
 `bash <(curl -sL https://raw.githubusercontent.com/node-red/linux-installers/master/deb/update-nodejs-and-nodered)`  
-Note: be sure to answer `y` when asked about installing the Pi-specific nodes.
+>**Note:** Be sure to answer `y` when asked about installing the Pi-specific nodes.
 - Install additional Node-RED nodes for the Sense HAT and the IoT service  
 `npm install --prefix ~/.node-red node-red-node-pi-sense-hat node-red-contrib-ibm-watson-iot`
 
 ## Node-RED
 
-[Node-RED](https://nodered.org/) is a tool for developing [Node.js](https://nodejs.org/en/) JavaScript applications in a visual drag & drop fashion.  It is a web browser based editor with a rich and extensible library of visual nodes that are linked together to describe the logical flow of an application.  The basic premise of Node-RED is to pass a JSON data object (msg) from node to node.  Each node along the way will alter or act on that data before passing it on to the next node in the flow.  Check out this short [Node-RED intro video](https://youtu.be/ksGeUD26Mw0?list=PLyNBB9VCLmo1hyO-4fIZ08gqFcXBkHy-6).
+[Node-RED](https://nodered.org/) is a tool for developing [Node.js](https://nodejs.org/en/) JavaScript applications in a visual drag & drop fashion.  It is a web browser based editor with a rich and extensible library of visual nodes that are linked together to describe the logical flow of an application.  The basic premise of Node-RED is to pass a JSON data object (msg) from node to node.  Each node along the way will alter or act on that data before passing it on to the next node in the flow.  Check out this short [Node-RED intro video](https://youtu.be/ksGeUD26Mw0?list=PLyNBB9VCLmo1hyO-4fIZ08gqFcXBkHy-6).  Click here to [learn more about Node-RED on a Raspberry Pi](https://nodered.org/docs/getting-started/raspberrypi).
 
 ### Starting the Node-RED server
 
 There are two methods for starting Node-RED on the Raspberry Pi. You can either start/stop it manually when needed, or you can run it as a service so that it starts automatically every time the system boots.
 
 - Manual start/stop  
-`node-red-start` and `node-red-stop`  
->**Note:** When the Node-RED app starts, using this method, the last action it performs is to start a logging function.  You can exit this logging, if needed, by pressing Ctrl-c.  This will not stop Node-RED itself.  If/When you want to stop Node-RED, you need to issue the stop command.
+`node-red-start` and `node-red-stop`
+
+  >**Note:** When the Node-RED app starts, using this method, the last action it performs is to start a logging function.  You can exit this logging, if needed, by pressing Ctrl-c.  This will not stop Node-RED itself.  If/When you want to stop Node-RED, you need to issue the stop command.  
 - Start automatically as a service  
 `sudo systemctl enable --now nodered.service`  
 To stop the service temporarily  
@@ -70,8 +71,7 @@ To stop the service temporarily
 To start it again:  
 `sudo systemctl start nodered.service`  
 To disable autostarting at boot  
-`sudo systemctl disable nodered.service`.  
-[Learn more about Node-RED on a Raspberry Pi here](https://nodered.org/docs/getting-started/raspberrypi).
+`sudo systemctl disable nodered.service`.
 
 ### Working with Node-RED
 
@@ -80,7 +80,8 @@ Once the Node-RED server is running, you are ready to start building a Node-RED 
 For example, on a local system, you would use either:  
 `http://localhost:1880` or  `http://127.0.0.1:1880`  
 If you are connecting to Node-RED on your remote Raspberry Pi, you simply replace the ip address or hostname in the addresses above with those of your Raspberry Pi.  
->**Note:** As this workshop is structured to demonstrate an IoT and cloud environment, the instructions will assume that you are connecting to remote servers.  
+>**Note:** As this workshop is structured to demonstrate an IoT and cloud environment, the instructions will assume that you are connecting to remote servers.
+
 At this point, you should be presented with the Node-RED design tool:
 ![Node-RED Editor](/images/node-red.png)
 On the left side of the editor, you will see the *Node Palette*.  On the right is the *Information Panel*.  the center section is your *Design Canvas*.  

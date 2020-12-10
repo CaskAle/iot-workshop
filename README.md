@@ -54,7 +54,7 @@ Note: be sure to answer `y` when asked about installing the Pi-specific nodes.
 
 ## Node-RED
 
-[Node-RED](https://nodered.org/) is a tool for developing [Node.js](https://nodejs.org/en/) JavaScript applications in a visual drag & drop fashion.  It is a web browser based editor with a rich and extensible library of visual nodes that are linked together to describe the logical flow of an application.  The basic premise of Node-RED is to pass a data object from node to node and alter/act on that data, at each node, before passing it on to the next node.  Check out this short [Node-RED intro video](https://youtu.be/ksGeUD26Mw0?list=PLyNBB9VCLmo1hyO-4fIZ08gqFcXBkHy-6).
+[Node-RED](https://nodered.org/) is a tool for developing [Node.js](https://nodejs.org/en/) JavaScript applications in a visual drag & drop fashion.  It is a web browser based editor with a rich and extensible library of visual nodes that are linked together to describe the logical flow of an application.  The basic premise of Node-RED is to pass a JSON data object (msg) from node to node.  Each node along the way will alter or act on that data before passing it on to the next node in the flow.  Check out this short [Node-RED intro video](https://youtu.be/ksGeUD26Mw0?list=PLyNBB9VCLmo1hyO-4fIZ08gqFcXBkHy-6).
 
 ### Starting the Node-RED server
 
@@ -83,14 +83,14 @@ If you are connecting to Node-RED on your remote Raspberry Pi, you simply replac
 **Note:** As this workshop is structured to demonstrate an IoT and cloud environment, the instructions will assume that you are connecting to remote servers.  
 At this point, you should be presented with the Node-RED design tool:
 ![Node-RED Editor](/images/node-red.png)
-On the left side of the editor, you will see the *Node Palette*.  On the right is the *Information Panel*.  the center section is your *Design Canvas*.  To build a Node-RED application:
+On the left side of the editor, you will see the *Node Palette*.  On the right is the *Information Panel*.  the center section is your *Design Canvas*.  
+To build a Node-RED application:  
 
 - Drag nodes from the *node palette* on to the *design canvas*.  
 - Customize the nodes with application logic by double clicking on them.  
 - Nodes are then linked together with *wires* to create the logical flow of your application.  To create a wire between two nodes, you simply click on the anchor of one node and drag over to an anchor on another node.
 - During the design, use the *information panel* to understand the specific function and requirements of each node type.
-
-Once you have you application ready to go, clicking the ![Deploy](/images/deploy.png) button launches it.
+- Once you have you application ready to go, clicking the ![Deploy](/images/deploy.png) button launches it.
 
 ## Start The Workshop
 
@@ -106,36 +106,38 @@ Two sets of instructions are provided for this workshop.  If you have prior expe
 
 In this portion of the workshop you will create a Node-RED application on the Raspberry Pi that will collect sensor data from a device called a Sense HAT that is attached to the Raspberry Pi.  You will then forward that data to your IoT Platform service so that it can be used by a corresponding Node-RED application that you will create in IBM Cloud.  There are three different types of sensor data available from the Sense HAT (environment, motion, & joystick).  However, you will only be using the environment and joystick data for this workshop.  In addition to sending data to the IoT platform, this application will also receive commands sent from the IBM Cloud application that will control the 8x8 LED matrix that is part of the Sense HAT device.  One command (alarm) will turn the entire matrix into a solid color that is provided as a part of the command.  The other command (message) will scroll a text message across the LED matrix.  The message, the text color, and the background color will all be provided as a part of the command.
 
-#### Flow #1 – Local testing of the Sense-HAT
+#### Flow #1 – Local testing of the Raspberry Pi and Sense-HAT
 
 In this first flow, you will simply send data to and revieve data from the Sense HAT in order to verify it's correct operation.
 
-1. Refer to the [Hardware Setup](#hardware-setup) and [Software Setup](#software-setup) sections and ensure that your Raspberry Pi is properly configured.
-1. Refer to the [Node-RED](#node-red) section and ensure that the Node-RED server is running on your Raspberry Pi.
+1. Refer to the [Hardware Setup](#hardware-setup) and [Software Setup](#software-setup) sections and ensure that your Raspberry Pi and Sense HAT are properly installed and configured.
+1. Refer to the [Node-RED](#node-red) section and ensure that the Node-RED server is started on your Raspberry Pi.
 1. Start your web browser and connect to the Node-RED server on the Raspberry Pi:  
 `http://<server name/address>:1880`
-1. Using the node palette, locate the appropriate node and create a flow in your design editor that looks like this:  
+1. Using the node palette, locate the appropriate nodes and create a flow in your design editor that looks like this:  
 ![pi-flow-1](/images/pi-flow-1.png)  
-   **Note:** An exact match to this image is not required.  You can place the nodes wherever you like in the editor.
+**Note:** An exact match to this image is not required.  You can place the nodes wherever you like in the editor.
 1. Configure the nodes:
-   - The `Sense HAT` input node is reponsible for collecting sensor data from the actual device and forwarding it on.  In this case it goes to a debug node.  Double clicking the node will open the configuration panel.  In that panel, you will see that you can set which sensor data you are interested in.  In this workshop we will not be using **motion** sensor data so, uncheck that box.
-   - The `debug` node is used to
-   - The `inject` node  
-   To set the entire matrix to a color:  
-   `msg.payload` to `*,*,color`  
+   - The `Sense HAT` input node is reponsible for collecting sensor data from the actual device, plasing it into a msg object and forwarding it on.  In this case it goes to a debug node.  Double clicking on any node will open the settings for that node.  In the settings for the Sense HAT node, you will see that you can set which sensor data you are interested in.  In this workshop we will not be using the motion sensor data so, **uncheck Motion Events**.
+   - The `debug` node is used to allow a developer the opportunity to inspect the message data that is flowing through the application.  Debug nodes can be placed anywhere in the flow to provide the developer the opportunity to validate that the message looks the way it should.  The settings for the debug node allow you to determine just how much of the msg object you want to see.  In this case, we are interested in the entire message so set **Output** to **complete msg object**
+   - The `Sense HAT` output node is used to control the LED matrix on the actual Sense HAT device and expects to receive message object in a specific format based upon the desired output on the LED.  There are no configuration settings for this node as the message object expected will be created by the inject nodes.  
+   - The `inject` node is a way to create a message object and insert it into the application flow.  It is useful for testing an application flow by inserting sample messages in order to verify correct application results.  In this case, the message object that is created will go directly to the Sense HAT output node.  In this flow, your inject nodes will create two specific message objects.  
 
-     To scroll a message across the screen:  
-   `msg.payload` to `display message`  
-   `msg.payload` to `text color`  
-   `msg.payload` to `background color`  
-   Colors can be...
-   - The `Sense HAT` output node sends a specifically constructed message out to the Sense HAT LED matrix.  There are no configuration settings for this node.  The data package is created by the inject nodes and then sent straight through.
-1. Click the deploy button to execute this test flow and verify that the Sense HAT is working properly.
-   - In the information panel select the debug tab (it looks like a bug).  At this point, you should see a tremendous amount of data flowing into your debug node from the Sense HAT node.  
+     The first sets the entire LED matrix to a specific color (eg. "red").  To do this, you set the **msg.payload** of the msg object to a **string** value of **\*,\*,color**.  Use this message format for the *Alarm* and the *Off* inject nodes.  
+     **Note:** The color specified can be any of the well-known [HTML colour names](https://en.wikipedia.org/wiki/Web_colors#HTML_color_names) (eg. red or aquamarine).  In addition, off is a valid color.
+
+     The second scrolls a message across the screen.  In order to do this, there are three variables in the message object that must be set to string values:  
+     Set **msg.payload** to the message you wish to display.  
+     Set **msg.color** to the desired text color.  
+     Set **msg.background** to the desired background color.  
+     **Hint:**  Use the `+add` button in the inject node settings to set multiple variable values.  Use the `x` button to delete uneeded values.
+
+1. At this point you should be able to test the flow.  Click the deploy button to execute this test flow and verify that the Sense HAT is working properly.
+   - In the information panel to the right of your design palette, select the debug tab (it looks like a bug).  At this point, you should see a tremendous amount of data scrolling by.  This is coming from the debug node.  
    - Stop the debug output by clicking green button on the right side of the debug node and the data in the debug panel will stop scrolling.  
-   - Take a minute to examine the debug output.  You will see that each message has a topic and a payload.  Notice that the topic will match one of the two data types that the Sense HAT reports (environment & joystick).  
+   - Take a minute to examine the debug output.  You will see that each message has a topic and a payload.  Notice that the topic will match one of the two sensors that the Sense HAT is configured to report (environment & joystick).  
    **Note:** You will only see joystick topics when you actually use the Sense HAT joystick.
-   - Test the LED by clicking the buttons on the left side of the inject nodes.  If properly configured, the LED on the Sense HAT will respond by performing the requested action.
+   - Test the LED by clicking the buttons on the left side of the inject nodes to actually inject the message.  If properly configured, the LED on the Sense HAT will respond by performing the requested action.
 
 #### Flow #2 – Send Sensor Data to IBM Cloud
 
@@ -145,7 +147,7 @@ In this flow, the collected data will now be forwarded up to the IBM Internet of
 ![pi-flow-2](/images/pi-flow-2.png)  
    **Note:** Again, an exact match to this image is not required.
 1. Configure the nodes:
-   - One of the Sense HAT nodes should output only **environment** data.  The other should output only **joystick** data.
+   - One of the `Sense HAT` input nodes should output only **environment** data.  The other should output only **joystick** data.
    - The `delay` node is used to put limits on the number of messages leaving the node.  In order to keep limit the environment data going up to the cloud, open the node settings and set the action type to **Rate Limit** for **All messages**.  Set the rate to **1 message every 5 seconds** and check the box to **drop intermediate messages**.  This will cause the node to discard all but one message every five seconds.
    - The `Watson IoT` output nodes...
 

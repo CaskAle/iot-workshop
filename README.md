@@ -48,7 +48,7 @@ A great introduction to the Sense HAT, including attachment instructions, can be
 `sudo apt install -y sense-hat build-essential git`
 - Install/Update NodeJS & Node-RED  
 `bash <(curl -sL https://raw.githubusercontent.com/node-red/linux-installers/master/deb/update-nodejs-and-nodered)`  
->**Note:** Be sure to answer `y` when asked about installing the Pi-specific nodes.
+  >**Note:** Be sure to answer `y` when asked about installing the Pi-specific nodes.
 - Install additional Node-RED nodes for the Sense HAT and the IoT service  
 `npm install --prefix ~/.node-red node-red-node-pi-sense-hat node-red-contrib-ibm-watson-iot`
 
@@ -137,7 +137,7 @@ In this first flow, you will simply send data to and revieve data from the Sense
    - In the information panel to the right of your design palette, select the debug tab (it looks like a bug).  At this point, you should see a tremendous amount of data scrolling by.  This is coming from the debug node.  
    - Stop the debug output by clicking green button on the right side of the debug node and the data in the debug panel will stop scrolling.  
    - Take a minute to examine the debug output.  You will see that each message has a topic and a payload.  Notice that the topic will match one of the two sensors that the Sense HAT is configured to report (environment & joystick).  
-   >**Note:** You will only see joystick topics when you actually use the Sense HAT joystick.
+     >**Note:** You will only see joystick topics when you actually move the Sense HAT joystick.
    - Test the LED by clicking the buttons on the left side of the inject nodes to actually inject the message.  If properly configured, the LED on the Sense HAT will respond by performing the requested action.
 
 #### Flow #2 – Send Sensor Data to IBM Cloud
